@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riga Studio — Piezas únicas para tu hogar · Uruguay</title>
+  <meta name="description" content="Riga Studio — Individuales, almohadas, bandejas y ropa de cama diseñadas y fabricadas en Uruguay. Piezas únicas de producción limitada.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --white: #FFFFFF;
+      --off-white: #F8F8F6;
+      --light-gray: #E8E8E6;
+      --mid-gray: #BBBBBB;
+      --dark-gray: #666666;
+      --black: #0A0A0A;
+      --text: #1A1A1A;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); overflow-x: hidden; font-weight: 300; line-height: 1.6; }
+    img { max-width: 100%; display: block; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--white); }
+    ::-webkit-scrollbar-thumb { background: var(--black); }
+
+    /* SCROLL PROGRESS */
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--white); z-index: 1001; width: 0%; }
+
+    /* ── NAV ───────────────────────────────────────────────────── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: background 0.5s, border-color 0.5s; }
+    nav.scrolled { background: var(--white); border-bottom: 1px solid var(--light-gray); }
+    .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 4%; height: 60px; position: relative; }
+    .nav-hamburger { background: none; border: none; cursor: pointer; padding: 4px; display: flex; flex-direction: column; gap: 5px; }
+    .nav-hamburger span { display: block; width: 22px; height: 1px; background: var(--white); transition: background 0.5s; }
+    nav.scrolled .nav-hamburger span { background: var(--black); }
+    .nav-logo {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      text-decoration: none; line-height: 0;
+    }
+    .nav-logo img { height: 34px; width: auto; filter: brightness(0) invert(1); transition: filter 0.5s; }
+    nav.scrolled .nav-logo img { filter: none; }
+    .nav-logo-text {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 500;
+      letter-spacing: 0.22em; color: var(--white); text-transform: uppercase; transition: color 0.5s;
+      display: none;
+    }
+    nav.scrolled .nav-logo-text { color: var(--black); }
+    .nav-right { display: flex; align-items: center; gap: 1.4rem; }
+    .nav-icon { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); text-decoration: none; transition: color 0.5s, opacity 0.2s; }
+    nav.scrolled .nav-icon { color: var(--black); }
+    .nav-icon:hover { opacity: 0.55; }
+    .nav-search-bar {
+      background: var(--white); display: flex; align-items: center; padding: 0 4%; height: 42px;
+      border-bottom: 1px solid var(--light-gray);
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    }
+    nav.scrolled .nav-search-bar { max-height: 42px; }
+    .nav-search-bar input { flex: 1; border: none; outline: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; color: var(--text); }
+    .nav-search-bar input::placeholder { color: var(--mid-gray); }
+    .nav-search-icon { color: var(--mid-gray); font-size: 1rem; }
+
+    /* ── HERO ──────────────────────────────────────────────────── */
+    #hero { position: relative; width: 100%; height: 100vh; overflow: hidden; display: flex; align-items: flex-end; }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-6c70b77d164d6d5b6e17796343555751-1024-1024.webp');
+      background-size: cover; background-position: center;
+      transform: scale(1.03); transition: transform 8s ease-out;
+    }
+    .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.2) 100%); }
+    .hero-content { position: relative; z-index: 1; width: 100%; padding: 0 5% 4.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .hero-text { max-width: 520px; }
+    .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase; color: rgba(255,255,255,0.65); margin-bottom: 1.2rem; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem, 5.5vw, 5.8rem); font-weight: 300; line-height: 1.05; color: var(--white); margin-bottom: 2rem; }
+    .hero-title em { font-style: italic; }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-hero { background: var(--white); color: var(--black); padding: 0.9rem 2.4rem; font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-family: 'Inter', sans-serif; transition: opacity 0.2s; display: inline-block; font-weight: 400; }
+    .btn-hero:hover { opacity: 0.82; }
+    .btn-hero-ghost { border: 1px solid rgba(255,255,255,0.6); color: var(--white); padding: 0.9rem 2.4rem; font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-family: 'Inter', sans-serif; transition: all 0.25s; display: inline-block; font-weight: 400; }
+    .btn-hero-ghost:hover { background: var(--white); color: var(--black); }
+    .btn-primary { background: var(--black); color: var(--white); padding: 0.9rem 2.4rem; font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-family: 'Inter', sans-serif; transition: opacity 0.2s; display: inline-block; font-weight: 400; }
+    .btn-primary:hover { opacity: 0.72; }
+    .btn-outline { border: 1px solid var(--black); color: var(--black); padding: 0.9rem 2.4rem; font-size: 0.63rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; font-family: 'Inter', sans-serif; transition: all 0.25s; display: inline-block; font-weight: 400; }
+    .btn-outline:hover { background: var(--black); color: var(--white); }
+    .hero-side { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .hero-label { font-size: 0.56rem; letter-spacing: 0.32em; text-transform: uppercase; color: rgba(255,255,255,0.65); writing-mode: vertical-rl; }
+    .hero-dots { display: flex; flex-direction: column; gap: 6px; }
+    .hero-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+    .hero-dot.active { background: var(--white); }
+    .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
+    .hero-scroll-line { width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.7), transparent); animation: scrollAnim 2s ease-in-out infinite; }
+    @keyframes scrollAnim { 0%,100%{opacity:0.3;transform:scaleY(0.6)} 50%{opacity:1;transform:scaleY(1)} }
+
+    /* ── MARQUEE ───────────────────────────────────────────────── */
+    .marquee-section { border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); padding: 13px 0; overflow: hidden; background: var(--white); }
+    .marquee-track { display: flex; animation: marquee 30s linear infinite; width: max-content; }
+    .marquee-item { display: flex; align-items: center; gap: 1.8rem; white-space: nowrap; font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--dark-gray); padding: 0 2rem; }
+    .marquee-dot { width: 3px; height: 3px; background: var(--mid-gray); border-radius: 50%; flex-shrink: 0; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+    /* ── CATEGORÍAS ────────────────────────────────────────────── */
+    #categorias { padding: 0; }
+    .categorias-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+    .categoria-item {
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      padding-bottom: 1.8rem; text-align: center; cursor: pointer;
+      text-decoration: none; color: var(--text); position: relative; overflow: hidden;
+      aspect-ratio: 3/4; border-right: 1px solid var(--light-gray);
+    }
+    .categoria-item:last-child { border-right: none; }
+    .categoria-img { position: absolute; inset: 0; background-size: cover; background-position: center; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .categoria-item:hover .categoria-img { transform: scale(1.06); }
+    .categoria-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.05) 60%); }
+    .categoria-name { position: relative; z-index: 1; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); font-weight: 400; }
+
+    /* ── SECTION HELPERS ───────────────────────────────────────── */
+    .section-label { font-size: 0.6rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--dark-gray); margin-bottom: 1.2rem; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3.4rem); font-weight: 300; color: var(--black); line-height: 1.1; }
+    .section-title em { font-style: italic; }
+    .section-line { width: 28px; height: 1px; background: var(--black); margin: 1.6rem 0 2rem; }
+    .section-line-light { width: 28px; height: 1px; background: rgba(255,255,255,0.3); margin: 1.6rem 0 2rem; }
+
+    /* ── SOBRE ─────────────────────────────────────────────────── */
+    #sobre { padding: 110px 5%; background: var(--white); }
+    .sobre-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center; }
+    .sobre-text p { font-size: 0.9rem; line-height: 2.05; color: var(--dark-gray); margin-bottom: 1.2rem; }
+    .sobre-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2rem; }
+    .badge { border: 1px solid var(--light-gray); padding: 5px 14px; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dark-gray); }
+    .sobre-stats { display: grid; grid-template-columns: 1fr 1fr; }
+    .sobre-stat { padding: 3rem 2.5rem; text-align: center; border: 1px solid var(--light-gray); margin: -1px 0 0 -1px; }
+    .stat-num { font-family: 'Cormorant Garamond', serif; font-size: 3.2rem; font-weight: 300; color: var(--black); line-height: 1; margin-bottom: 0.5rem; }
+    .stat-label { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dark-gray); }
+
+    /* ── DROPS ─────────────────────────────────────────────────── */
+    #drops { background: var(--black); padding: 110px 5%; }
+    .drops-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.2fr 1fr; gap: 8rem; align-items: center; }
+    .drops-text .section-label { color: rgba(255,255,255,0.4); }
+    .drops-text .section-title { color: var(--white); }
+    .drops-text p { font-size: 0.9rem; line-height: 2; color: rgba(255,255,255,0.48); margin-bottom: 1rem; }
+    .drops-features { display: flex; flex-direction: column; gap: 0; margin-top: 2.5rem; }
+    .drop-feature { display: flex; align-items: flex-start; gap: 1.5rem; padding: 1.6rem 0; border-top: 1px solid rgba(255,255,255,0.08); }
+    .drop-num { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: rgba(255,255,255,0.2); flex-shrink: 0; padding-top: 1px; }
+    .drop-feature-text h4 { font-size: 0.72rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); margin-bottom: 5px; }
+    .drop-feature-text p { font-size: 0.82rem; color: rgba(255,255,255,0.38); line-height: 1.7; margin: 0; }
+    .drops-card { border: 1px solid rgba(255,255,255,0.12); padding: 3rem; }
+    .drops-card-label { font-size: 0.6rem; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(255,255,255,0.38); margin-bottom: 1.5rem; }
+    .drops-card-title { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--white); margin-bottom: 0.5rem; line-height: 1.1; }
+    .drops-card-sub { font-size: 0.82rem; color: rgba(255,255,255,0.32); margin-bottom: 2.5rem; }
+    .drops-form { display: flex; flex-direction: column; gap: 10px; }
+    .drops-form input { background: transparent; border: 1px solid rgba(255,255,255,0.18); color: var(--white); padding: 0.9rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; transition: border-color 0.2s; }
+    .drops-form input::placeholder { color: rgba(255,255,255,0.22); }
+    .drops-form input:focus { border-color: rgba(255,255,255,0.45); }
+    .drops-form button { background: var(--white); color: var(--black); border: none; padding: 0.9rem; font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+    .drops-form button:hover { opacity: 0.8; }
+    .drops-form-note { font-size: 0.6rem; color: rgba(255,255,255,0.18); margin-top: 0.4rem; }
+
+    /* ── PRODUCTOS ─────────────────────────────────────────────── */
+    #productos { padding: 110px 0; background: var(--white); }
+    .productos-header { max-width: 1200px; margin: 0 auto 3rem; padding: 0 5%; display: flex; justify-content: space-between; align-items: flex-end; }
+    .productos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--light-gray); border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); }
+    .product-card { background: var(--white); overflow: hidden; position: relative; }
+    .product-img { width: 100%; aspect-ratio: 3/4; overflow: hidden; position: relative; }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .product-card:hover .product-img img { transform: scale(1.05); }
+    .product-badge { position: absolute; top: 12px; left: 12px; background: var(--black); color: var(--white); font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; z-index: 2; }
+    .product-badge.sin-stock { background: var(--mid-gray); }
+    .product-badge.nuevo { background: var(--black); }
+    .product-info { padding: 1.3rem 1.4rem 1.8rem; }
+    .product-category { font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dark-gray); margin-bottom: 6px; }
+    .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; color: var(--black); margin-bottom: 8px; line-height: 1.3; }
+    .product-price { font-size: 0.82rem; font-weight: 400; color: var(--text); }
+    .product-cta { display: block; text-align: center; font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; padding: 11px; border-top: 1px solid var(--light-gray); color: var(--text); transition: background 0.2s, color 0.2s; }
+    .product-cta:hover { background: var(--black); color: var(--white); }
+
+    /* ── EDITORIAL SPLIT ───────────────────────────────────────── */
+    #editorial { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--light-gray); }
+    .editorial-img { min-height: 560px; overflow: hidden; position: relative; }
+    .editorial-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .editorial-content { display: flex; flex-direction: column; justify-content: center; padding: 5rem 7%; border-left: 1px solid var(--light-gray); }
+    .editorial-content p { font-size: 0.9rem; color: var(--dark-gray); line-height: 2.05; margin-bottom: 1.2rem; }
+
+    /* ── GALERÍA ───────────────────────────────────────────────── */
+    #galeria { background: var(--off-white); padding: 110px 5%; }
+    .galeria-header { max-width: 1200px; margin: 0 auto 3rem; display: flex; justify-content: space-between; align-items: flex-end; }
+    .galeria-header a { color: var(--black); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 2px; transition: opacity 0.2s; }
+    .galeria-header a:hover { opacity: 0.5; }
+    .galeria-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 200px); gap: 2px; background: var(--light-gray); }
+    .galeria-item { position: relative; overflow: hidden; cursor: pointer; }
+    .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    .galeria-item:nth-child(6) { grid-column: span 2; }
+    .galeria-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .galeria-item:hover img { transform: scale(1.06); }
+    .galeria-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); transition: background 0.4s; display: flex; align-items: flex-end; padding: 1.2rem; }
+    .galeria-item:hover .galeria-overlay { background: rgba(0,0,0,0.18); }
+    .galeria-tag { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--white); background: rgba(0,0,0,0.55); padding: 4px 10px; opacity: 0; transition: opacity 0.4s; }
+    .galeria-item:hover .galeria-tag { opacity: 1; }
+
+    /* ── TESTIMONIOS ───────────────────────────────────────────── */
+    #testimonios { background: var(--white); padding: 110px 5%; }
+    .testimonios-header { max-width: 1200px; margin: 0 auto 3.5rem; }
+    .testimonios-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--light-gray); }
+    .testimonial-card { background: var(--white); padding: 3rem 2.5rem; }
+    .testimonial-quote { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--mid-gray); line-height: 1; margin-bottom: 1.5rem; }
+    .testimonial-text { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-style: italic; line-height: 1.9; color: var(--text); margin-bottom: 2rem; }
+    .testimonial-author { display: flex; align-items: center; gap: 14px; padding-top: 1.5rem; border-top: 1px solid var(--light-gray); }
+    .testimonial-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--black); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--white); flex-shrink: 0; }
+    .testimonial-name { font-size: 0.78rem; font-weight: 400; color: var(--black); }
+    .testimonial-stars { font-size: 0.62rem; letter-spacing: 3px; color: var(--black); }
+    .testimonial-product { font-size: 0.62rem; color: var(--dark-gray); margin-top: 2px; }
+
+    /* ── CONTACTO ──────────────────────────────────────────────── */
+    #contacto { background: var(--off-white); padding: 110px 5%; }
+    .contacto-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 8rem; align-items: start; }
+    .contacto-info p { font-size: 0.9rem; color: var(--dark-gray); line-height: 2; margin-bottom: 2.5rem; }
+    .contacto-items { display: flex; flex-direction: column; margin-bottom: 2.5rem; }
+    .contacto-item { display: flex; align-items: center; gap: 1.4rem; padding: 1.1rem 0; border-bottom: 1px solid var(--light-gray); }
+    .contacto-item:first-child { border-top: 1px solid var(--light-gray); }
+    .contacto-icon { font-size: 0.9rem; flex-shrink: 0; width: 22px; text-align: center; }
+    .contacto-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--dark-gray); }
+    .contacto-val { font-size: 0.83rem; color: var(--text); }
+    .wsp-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--black); color: var(--white); padding: 0.9rem 2rem; text-decoration: none; font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; transition: opacity 0.2s; }
+    .wsp-btn:hover { opacity: 0.7; }
+    .contacto-form { display: flex; flex-direction: column; gap: 1px; background: var(--light-gray); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; }
+    .form-group { display: flex; flex-direction: column; background: var(--white); }
+    .form-group label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--dark-gray); padding: 1rem 1.2rem 0.3rem; }
+    .form-group input, .form-group textarea, .form-group select { background: transparent; border: none; padding: 0 1.2rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.86rem; color: var(--text); outline: none; }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select { appearance: none; cursor: pointer; }
+    .form-submit { background: var(--black); color: var(--white); border: none; padding: 1.1rem 2.2rem; font-family: 'Inter', sans-serif; font-size: 0.63rem; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; align-self: flex-start; margin-top: 1px; }
+    .form-submit:hover { opacity: 0.7; }
+
+    /* ── FOOTER ────────────────────────────────────────────────── */
+    footer { background: var(--white); border-top: 1px solid var(--light-gray); }
+    .footer-newsletter { text-align: center; padding: 1.8rem 5%; border-bottom: 1px solid var(--light-gray); }
+    .footer-newsletter-link { font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--black); text-decoration: none; transition: opacity 0.2s; }
+    .footer-newsletter-link:hover { opacity: 0.5; }
+    .footer-social { text-align: center; padding: 1.8rem 5%; border-bottom: 1px solid var(--light-gray); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .footer-social-label { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dark-gray); }
+    .footer-social-icons { display: flex; gap: 1.5rem; align-items: center; }
+    .footer-social-icon { color: var(--black); text-decoration: none; transition: opacity 0.2s; }
+    .footer-social-icon:hover { opacity: 0.5; }
+    .footer-accordion { border-bottom: 1px solid var(--light-gray); }
+    .footer-accordion:last-child { border-bottom: none; }
+    .footer-accordion summary { padding: 1.2rem 5%; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--black); }
+    .footer-accordion summary::-webkit-details-marker { display: none; }
+    .footer-accordion summary::after { content: '+'; font-size: 1rem; font-weight: 300; }
+    .footer-accordion[open] summary::after { content: '−'; }
+    .footer-accordion ul { list-style: none; padding: 0 5% 1.2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .footer-accordion ul a { font-size: 0.78rem; color: var(--dark-gray); text-decoration: none; transition: color 0.2s; }
+    .footer-accordion ul a:hover { color: var(--black); }
+    .footer-bottom { text-align: center; padding: 1.4rem 5%; border-top: 1px solid var(--light-gray); }
+    .footer-copy { font-size: 0.6rem; color: var(--mid-gray); letter-spacing: 0.12em; text-transform: uppercase; }
+
+    /* ── ANIMATIONS ────────────────────────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger-child { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .stagger-child.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 1100px) {
+      .productos-grid { grid-template-columns: repeat(3, 1fr); }
+      .drops-inner { grid-template-columns: 1fr; gap: 4rem; }
+    }
+    @media (max-width: 960px) {
+      .sobre-inner, .contacto-inner { grid-template-columns: 1fr; gap: 4rem; }
+      #editorial { grid-template-columns: 1fr; }
+      .editorial-content { border-left: none; border-top: 1px solid var(--light-gray); }
+      .categorias-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      #sobre, #drops, #galeria, #testimonios, #contacto { padding: 70px 5%; }
+      .productos-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonios-grid { grid-template-columns: 1fr; }
+      .galeria-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: auto; }
+      .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .categorias-grid { grid-template-columns: repeat(2, 1fr); }
+      .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+      .galeria-item:nth-child(1) { grid-column: span 2; }
+      .galeria-item:nth-child(6) { grid-column: span 1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-top">
+    <div class="nav-left">
+      <button class="nav-hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <a href="#hero" class="nav-logo">
+      <img src="https://dcdn-us.mitiendanube.com/stores/007/435/145/themes/common/logo-4107181246692793165-1773798017-582c3b4bd6c9bd92c141628356ead0121773798017.png"
+           alt="Riga Studio"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+      <span class="nav-logo-text" style="display:none">Riga Studio</span>
+    </a>
+    <div class="nav-right">
+      <a href="https://www.instagram.com/riga__studio/" target="_blank" class="nav-icon">Instagram</a>
+      <a href="https://rigastudio.mitiendanube.com" target="_blank" class="nav-icon">Tienda</a>
+    </div>
+  </div>
+  <div class="nav-search-bar">
+    <input type="text" placeholder="Buscar productos...">
+    <span class="nav-search-icon">⌕</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <div class="hero-text reveal-left">
+      <p class="hero-eyebrow">Nueva colección · Hecho en Uruguay</p>
+      <h1 class="hero-title">
+        Piezas que<br><em>llenan tu casa</em><br>de vida.
+      </h1>
+      <div class="hero-actions">
+        <a href="https://rigastudio.mitiendanube.com" target="_blank" class="btn-hero">Ver colección</a>
+        <a href="#drops" class="btn-hero-ghost">Sistema drops</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="hero-label">Nueva Colección</div>
+      <div class="hero-dots">
+        <div class="hero-dot active"></div>
+        <div class="hero-dot"></div>
+        <div class="hero-dot"></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="hero-scroll-line"></div></div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- CATEGORÍAS -->
+<section id="categorias">
+  <div class="categorias-grid">
+    <a href="https://rigastudio.mitiendanube.com/individuales/" target="_blank" class="categoria-item">
+      <div class="categoria-img" style="background-image:url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-03-17-at-6-27-01-pm-d7877a3bdc4dedaac217737871460343-1024-1024.webp')"></div>
+      <div class="categoria-overlay"></div>
+      <span class="categoria-name">Individuales</span>
+    </a>
+    <a href="https://rigastudio.mitiendanube.com/fundas-de-almohadas/" target="_blank" class="categoria-item">
+      <div class="categoria-img" style="background-image:url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2583-c4b52289e1d52c40d317810536885716-1024-1024.webp')"></div>
+      <div class="categoria-overlay"></div>
+      <span class="categoria-name">Almohadas</span>
+    </a>
+    <a href="https://rigastudio.mitiendanube.com/ropa-de-cama/" target="_blank" class="categoria-item">
+      <div class="categoria-img" style="background-image:url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/set-riga-1-69b1a0fcd09c5e2f6017810956162404-1024-1024.webp')"></div>
+      <div class="categoria-overlay"></div>
+      <span class="categoria-name">Ropa de cama</span>
+    </a>
+    <a href="https://rigastudio.mitiendanube.com/marcos-y-bandejas/" target="_blank" class="categoria-item">
+      <div class="categoria-img" style="background-image:url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-20-at-2-14-27-pm-1-ebb365ac0e5f5957fa17792980143960-1024-1024.webp')"></div>
+      <div class="categoria-overlay"></div>
+      <span class="categoria-name">Bandejas</span>
+    </a>
+    <a href="https://rigastudio.mitiendanube.com" target="_blank" class="categoria-item">
+      <div class="categoria-img" style="background-image:url('https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-13-at-10-08-06-acc11f3bc0a272709017813560932524-1024-1024.webp')"></div>
+      <div class="categoria-overlay"></div>
+      <span class="categoria-name">Ver todo</span>
+    </a>
+  </div>
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="sobre-inner">
+    <div class="sobre-text reveal-left">
+      <p class="section-label">Nuestra historia</p>
+      <h2 class="section-title">Riga nace<br><em>entre amigas</em></h2>
+      <div class="section-line"></div>
+      <p>Riga nace entre amigas, impulsado por el amor por la decoración y los espacios con personalidad. Nos encanta llenar las casas de color, texturas y estampas divertidas que hagan cada rincón más lindo y especial.</p>
+      <p>También creemos en lo vintage y en darle nueva vida a objetos únicos. Buscamos joyitas con historia y las restauramos. Gracias por confiar en nosotras — esperamos que disfruten cada detalle tanto como nosotras al crearlo.</p>
+      <div class="sobre-badges">
+        <span class="badge">🇺🇾 Fabricado en Uruguay</span>
+        <span class="badge">Diseño de autor</span>
+        <span class="badge">Vintage restaurado</span>
+        <span class="badge">Envío gratis</span>
+        <span class="badge">Drops exclusivos</span>
+      </div>
+    </div>
+    <div class="reveal-right">
+      <div class="sobre-stats">
+        <div class="sobre-stat"><div class="stat-num counter" data-target="64">0</div><div class="stat-label">Diseños únicos</div></div>
+        <div class="sobre-stat"><div class="stat-num counter" data-target="1995">0</div><div class="stat-label">Seguidores</div></div>
+        <div class="sobre-stat"><div class="stat-num">5+</div><div class="stat-label">Categorías</div></div>
+        <div class="sobre-stat"><div class="stat-num counter" data-target="100">0</div><div class="stat-label">% Uruguay</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DROPS -->
+<section id="drops">
+  <div class="drops-inner">
+    <div class="drops-text reveal-left">
+      <p class="section-label">Nuestro sistema</p>
+      <h2 class="section-title" style="color:var(--white)">Trabajamos<br><em>por drops</em></h2>
+      <div class="section-line-light"></div>
+      <p>Todos nuestros productos son diseñados por nosotras y fabricados en Uruguay. Trabajamos por drops para mantener la exclusividad y el cuidado en cada detalle.</p>
+      <p>No son producción masiva — son piezas seleccionadas. Por eso la disponibilidad es limitada en cada lanzamiento.</p>
+      <div class="drops-features">
+        <div class="drop-feature"><div class="drop-num">01</div><div class="drop-feature-text"><h4>Exclusividad garantizada</h4><p>Cada drop tiene cantidad limitada. Una vez agotado, no vuelve.</p></div></div>
+        <div class="drop-feature"><div class="drop-num">02</div><div class="drop-feature-text"><h4>Hecho en Uruguay</h4><p>Diseñado y fabricado localmente con cuidado artesanal en cada pieza.</p></div></div>
+        <div class="drop-feature"><div class="drop-num">03</div><div class="drop-feature-text"><h4>Diseño de autor</h4><p>Patrones y estampas originales, desarrollados por nosotras para cada colección.</p></div></div>
+      </div>
+    </div>
+    <div class="drops-card reveal-right">
+      <div class="drops-card-label">Próximo lanzamiento</div>
+      <div class="drops-card-title">Nueva<br>Colección</div>
+      <div class="drops-card-sub">Sé de las primeras en enterarte</div>
+      <div class="drops-form">
+        <input type="email" placeholder="tu@email.com" id="notifyEmail">
+        <button onclick="handleNotify()">Avisarme</button>
+      </div>
+      <p class="drops-form-note">Sin spam. Solo cuando haya novedades.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section id="productos">
+  <div class="productos-header reveal">
+    <div>
+      <p class="section-label">Lo que creamos</p>
+      <h2 class="section-title">Destacados</h2>
+      <div class="section-line"></div>
+    </div>
+    <a href="https://rigastudio.mitiendanube.com" target="_blank" class="btn-outline">Ver tienda completa</a>
+  </div>
+  <div class="productos-grid" id="productsGrid"></div>
+</section>
+
+<!-- EDITORIAL -->
+<section id="editorial">
+  <div class="editorial-img">
+    <img src="https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2583-c4b52289e1d52c40d317810536885716-1024-1024.webp" alt="Almohadas Figari" loading="lazy">
+  </div>
+  <div class="editorial-content reveal-right">
+    <p class="section-label">Filosofía</p>
+    <h2 class="section-title">Objetos con<br><em>historia propia</em></h2>
+    <div class="section-line"></div>
+    <p>Creemos en los espacios con personalidad. Cada pieza de Riga Studio está pensada para ser el punto de atención de tu hogar — objetos que cuentan una historia y que se vuelven parte de tu vida cotidiana.</p>
+    <p>También damos nueva vida a piezas vintage restauradas, porque la belleza no siempre nace nueva.</p>
+    <a href="https://wa.me/59899670506" target="_blank" class="btn-primary" style="margin-top:2rem">Hacer un pedido</a>
+  </div>
+</section>
+
+<!-- GALERÍA -->
+<section id="galeria">
+  <div class="galeria-header reveal">
+    <div>
+      <p class="section-label">Nuestro trabajo</p>
+      <h2 class="section-title">Galería</h2>
+      <div class="section-line"></div>
+    </div>
+    <a href="https://www.instagram.com/riga__studio/" target="_blank">Ver en Instagram →</a>
+  </div>
+  <div class="galeria-grid" id="galeriaGrid"></div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="testimonios-header reveal">
+    <p class="section-label">Lo que dicen</p>
+    <h2 class="section-title">Nuestras clientas</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="testimonios-grid">
+    <div class="testimonial-card stagger-child">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Me encantaron los individuales, son unas genias. Quedaron perfectos en mi mesa, todos mis visitas me preguntan dónde los compré.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">A</div>
+        <div><div class="testimonial-name">Agustina</div><div class="testimonial-stars">★★★★★</div><div class="testimonial-product">Individuales Rayitas Mostaza</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card stagger-child">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Las bandejas son únicas. La Bandeja Uruguay quedó preciosa en la entrada de mi casa. Se nota la calidad y el amor con que está hecha.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">M</div>
+        <div><div class="testimonial-name">María</div><div class="testimonial-stars">★★★★★</div><div class="testimonial-product">Bandeja Uruguay II</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card stagger-child">
+      <div class="testimonial-quote">"</div>
+      <p class="testimonial-text">Las almohadas Figari son una joya. El cuadrillé es hermoso y la calidad del algodón es increíble. Ya compré dos sets para regalar.</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">C</div>
+        <div><div class="testimonial-name">Carolina</div><div class="testimonial-stars">★★★★★</div><div class="testimonial-product">Almohadas Figari</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contacto-inner">
+    <div class="reveal-left">
+      <p class="section-label">Hablemos</p>
+      <h2 class="section-title">¿Querés hacer<br>un pedido?</h2>
+      <div class="section-line"></div>
+      <p class="contacto-info">Escribinos por WhatsApp o completá el formulario. Te respondemos a la brevedad con disponibilidad y precios actualizados.</p>
+      <div class="contacto-items">
+        <div class="contacto-item"><div class="contacto-icon">📱</div><div><div class="contacto-label">WhatsApp</div><div class="contacto-val">+598 99 670 506</div></div></div>
+        <div class="contacto-item"><div class="contacto-icon">📸</div><div><div class="contacto-label">Instagram</div><div class="contacto-val">@riga__studio</div></div></div>
+        <div class="contacto-item"><div class="contacto-icon">🛍️</div><div><div class="contacto-label">Tienda online</div><div class="contacto-val">rigastudio.mitiendanube.com</div></div></div>
+        <div class="contacto-item"><div class="contacto-icon">📦</div><div><div class="contacto-label">Envíos</div><div class="contacto-val">A todo Uruguay · Gratis</div></div></div>
+      </div>
+      <a href="https://wa.me/59899670506" class="wsp-btn" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Escribir por WhatsApp
+      </a>
+    </div>
+    <form class="contacto-form reveal-right" onsubmit="handleForm(event)">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
+        <div class="form-group"><label>Teléfono</label><input type="tel" placeholder="+598..."></div>
+      </div>
+      <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="form-group">
+        <label>¿Qué te interesa?</label>
+        <select>
+          <option value="">Seleccionar...</option>
+          <option>Individuales</option>
+          <option>Fundas de almohadas</option>
+          <option>Ropa de cama (Sets nórdicos)</option>
+          <option>Bandejas y marcos</option>
+          <option>Piezas vintage restauradas</option>
+          <option>Quiero enterarme del próximo drop</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Mensaje</label><textarea placeholder="Contanos qué estás buscando, colores, tamaños..."></textarea></div>
+      <button type="submit" class="form-submit" id="formBtn">Enviar consulta →</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-newsletter">
+    <a href="#drops" class="footer-newsletter-link">ANOTATE EN NUESTROS DROPS · INTRODUCE TU EMAIL</a>
+  </div>
+  <div class="footer-social">
+    <span class="footer-social-label">Seguinos en</span>
+    <div class="footer-social-icons">
+      <a href="https://www.instagram.com/riga__studio/" target="_blank" class="footer-social-icon" aria-label="Instagram">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <a href="https://wa.me/59899670506" target="_blank" class="footer-social-icon" aria-label="WhatsApp">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </a>
+    </div>
+  </div>
+  <div>
+    <details class="footer-accordion">
+      <summary>Navegación</summary>
+      <ul>
+        <li><a href="#sobre">Nosotras</a></li>
+        <li><a href="#drops">Sistema drops</a></li>
+        <li><a href="#productos">Productos destacados</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </details>
+    <details class="footer-accordion">
+      <summary>Tienda</summary>
+      <ul>
+        <li><a href="https://rigastudio.mitiendanube.com/individuales/" target="_blank">Individuales</a></li>
+        <li><a href="https://rigastudio.mitiendanube.com/fundas-de-almohadas/" target="_blank">Fundas de almohadas</a></li>
+        <li><a href="https://rigastudio.mitiendanube.com/ropa-de-cama/" target="_blank">Ropa de cama</a></li>
+        <li><a href="https://rigastudio.mitiendanube.com/marcos-y-bandejas/" target="_blank">Bandejas y marcos</a></li>
+      </ul>
+    </details>
+    <details class="footer-accordion">
+      <summary>Contacto</summary>
+      <ul>
+        <li><a href="https://wa.me/59899670506" target="_blank">WhatsApp: +598 99 670 506</a></li>
+        <li><a href="https://www.instagram.com/riga__studio/" target="_blank">Instagram: @riga__studio</a></li>
+        <li><a href="https://rigastudio.mitiendanube.com" target="_blank">Tienda online</a></li>
+      </ul>
+    </details>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Riga Studio · Uruguay · Todos los derechos reservados</p>
+  </div>
+</footer>
+
+<script>
+  // ── PRODUCTOS REALES ──────────────────────────────────────────
+  const products = [
+    {
+      name: "Individuales Rayitas Mostaza",
+      category: "Individuales",
+      price: "desde $1.250",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-03-17-at-6-27-01-pm-d7877a3bdc4dedaac217737871460343-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/individuales-rayitas-mostaza/",
+      badge: "Destacado"
+    },
+    {
+      name: "Individuales Rombos Tierra",
+      category: "Individuales",
+      price: "desde $1.250",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-13-at-10-08-06-acc11f3bc0a272709017813560932524-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/individuales-rombos-tierra/",
+      badge: "Nuevo"
+    },
+    {
+      name: "Individuales Electro",
+      category: "Individuales",
+      price: "desde $1.250",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-13-at-10-02-00-fa83319f9541d58d6817813557256447-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/individuales-electro/",
+      badge: null
+    },
+    {
+      name: "Individuales Brunch",
+      category: "Individuales",
+      price: "desde $1.250",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2394-6f4cf00418f86aa42817813559144411-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/individuales-brunch/",
+      badge: null
+    },
+    {
+      name: "Almohadas Figari",
+      category: "Fundas de almohadas",
+      price: "$1.290",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2583-c4b52289e1d52c40d317810536885716-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/almohadas-figari/",
+      badge: null
+    },
+    {
+      name: "Almohadas Goya",
+      category: "Fundas de almohadas",
+      price: "$1.290",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-07-at-11-51-16-am-8dbf72828a9d8968f317781655855974-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/almohadas-goya/",
+      badge: null
+    },
+    {
+      name: "Set Minsk",
+      category: "Ropa de cama",
+      price: "desde $4.200",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-6c70b77d164d6d5b6e17796343555751-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/set-minsk/",
+      badge: "Destacado"
+    },
+    {
+      name: "Set Riga",
+      category: "Ropa de cama",
+      price: "$6.850",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/set-riga-1-69b1a0fcd09c5e2f6017810956162404-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/set-riga/",
+      badge: null
+    },
+    {
+      name: "Bandeja Uruguay II",
+      category: "Bandejas",
+      price: "$2.700",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-20-at-2-14-27-pm-1-ebb365ac0e5f5957fa17792980143960-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/bandeja-uruguay-ii/",
+      badge: null
+    },
+    {
+      name: "Bandeja Uruguay",
+      category: "Bandejas",
+      price: "$2.700",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-20-at-2-14-26-pm-1-95ff099b1c3c328c4917792980214186-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/bandeja-uruguay/",
+      badge: null
+    },
+    {
+      name: "Almohadas Matisse",
+      category: "Fundas de almohadas",
+      price: "$1.290",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-3-5c30e77466044a8c1b17796343555310-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/almohadas-matisse/",
+      badge: null
+    },
+    {
+      name: "Set Vienna",
+      category: "Ropa de cama",
+      price: "$6.850",
+      img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-10-at-09-47-00-f40f2ea2523925746a17810956257867-1024-1024.webp",
+      url: "https://rigastudio.mitiendanube.com/productos/set-vienna/",
+      badge: null
+    },
+  ];
+
+  // ── GALERÍA CON IMÁGENES REALES ───────────────────────────────
+  const galleryImages = [
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-6c70b77d164d6d5b6e17796343555751-1024-1024.webp", tag: "Set Minsk" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-03-17-at-6-27-01-pm-d7877a3bdc4dedaac217737871460343-1024-1024.webp", tag: "Individuales" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2583-c4b52289e1d52c40d317810536885716-1024-1024.webp", tag: "Almohadas" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-13-at-10-08-06-acc11f3bc0a272709017813560932524-1024-1024.webp", tag: "Rombos Tierra" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-20-at-2-14-27-pm-1-ebb365ac0e5f5957fa17792980143960-1024-1024.webp", tag: "Bandejas" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/set-riga-1-69b1a0fcd09c5e2f6017810956162404-1024-1024.webp", tag: "Set Riga" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/screenshot-2026-06-13-at-10-02-00-fa83319f9541d58d6817813557256447-1024-1024.webp", tag: "Electro" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/img_2394-6f4cf00418f86aa42817813559144411-1024-1024.webp", tag: "Brunch" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-07-at-11-51-16-am-8dbf72828a9d8968f317781655855974-1024-1024.webp", tag: "Almohadas Goya" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-1-e223e0111f7d551db317796343557118-1024-1024.webp", tag: "Dormitorio" },
+    { img: "https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-20-at-2-14-26-pm-1-95ff099b1c3c328c4917792980214186-1024-1024.webp", tag: "Bandeja Uruguay" },
+  ];
+
+  // ── BUILD MARQUEE ─────────────────────────────────────────────
+  const marqueeItems = ["Hecho en Uruguay","Diseño de autor","Drops exclusivos","Piezas únicas","Envío gratis","100% algodón","Pintado a mano","Cuadrillé exclusivo","Rayas · Rombos · Geométricos","Decoración con personalidad"];
+  const marqueeTrack = document.getElementById('marqueeTrack');
+  [0,1].forEach(() => marqueeItems.forEach(item => {
+    const el = document.createElement('span');
+    el.className = 'marquee-item';
+    el.innerHTML = `<span class="marquee-dot"></span>${item}`;
+    marqueeTrack.appendChild(el);
+  }));
+
+  // ── BUILD PRODUCTS ────────────────────────────────────────────
+  const productsGrid = document.getElementById('productsGrid');
+  products.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-img">
+        <img src="${p.img}" alt="${p.name}" loading="lazy">
+        ${p.badge ? `<span class="product-badge ${p.badge === 'Nuevo' ? 'nuevo' : ''}">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-info">
+        <div class="product-category">${p.category}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">${p.price}</div>
+      </div>
+      <a href="${p.url}" target="_blank" class="product-cta">Ver producto →</a>`;
+    productsGrid.appendChild(card);
+  });
+
+  // ── BUILD GALLERY ─────────────────────────────────────────────
+  const galeriaGrid = document.getElementById('galeriaGrid');
+  galleryImages.forEach(g => {
+    const item = document.createElement('div');
+    item.className = 'galeria-item stagger-child';
+    item.innerHTML = `
+      <img src="${g.img}" alt="${g.tag}" loading="lazy">
+      <div class="galeria-overlay"><div class="galeria-tag">${g.tag}</div></div>`;
+    galeriaGrid.appendChild(item);
+  });
+
+  // ── NAV + SCROLL PROGRESS ─────────────────────────────────────
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    const max = document.body.scrollHeight - window.innerHeight;
+    document.getElementById('scrollProgress').style.width = (scrollY / max * 100) + '%';
+    navbar.classList.toggle('scrolled', scrollY > window.innerHeight * 0.75);
+  }, { passive: true });
+
+  // ── HERO BG ZOOM INICIAL ──────────────────────────────────────
+  setTimeout(() => {
+    const bg = document.getElementById('heroBg');
+    if (bg) bg.style.transform = 'scale(1)';
+  }, 100);
+
+  // ── REVEAL ANIMATIONS ─────────────────────────────────────────
+  const revealObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObs.observe(el));
+
+  // ── STAGGER ───────────────────────────────────────────────────
+  const staggerObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.stagger-child').forEach((c,i) => setTimeout(() => c.classList.add('visible'), i*120));
+        staggerObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05 });
+  document.querySelectorAll('.testimonios-grid,.galeria-grid').forEach(el => staggerObs.observe(el));
+
+  // ── COUNTERS ──────────────────────────────────────────────────
+  function runCounter(el) {
+    const target = parseInt(el.dataset.target), dur = 1600;
+    let cur = 0; const step = target / (dur / 16);
+    const t = setInterval(() => {
+      cur += step;
+      if (cur >= target) { el.textContent = target.toLocaleString('es-UY'); clearInterval(t); }
+      else el.textContent = Math.floor(cur).toLocaleString('es-UY');
+    }, 16);
+  }
+  const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting){ e.target.querySelectorAll('.counter').forEach(runCounter); counterObs.unobserve(e.target); }});
+  }, { threshold: 0.3 });
+  const sobreEl = document.getElementById('sobre');
+  if (sobreEl) counterObs.observe(sobreEl);
+
+  // ── HERO VISIBLE ──────────────────────────────────────────────
+  setTimeout(() => {
+    document.querySelectorAll('#hero .reveal-left').forEach(el => el.classList.add('visible'));
+  }, 200);
+
+  // ── FORM ──────────────────────────────────────────────────────
+  function handleForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('formBtn');
+    btn.textContent = '✓ Mensaje enviado';
+    btn.style.opacity = '0.6';
+    setTimeout(() => { btn.textContent = 'Enviar consulta →'; btn.style.opacity = ''; }, 3000);
+  }
+  function handleNotify() {
+    const input = document.getElementById('notifyEmail');
+    if (input.value && input.value.includes('@')) {
+      input.value = '¡Listo! Te avisamos pronto.';
+      setTimeout(() => { input.value = ''; }, 3000);
+    }
+  }
+</script>
+</body>
+</html>
