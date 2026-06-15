@@ -4,182 +4,234 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Riga Studio — Tienda</title>
-<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#D4A827;--gold-d:#A8831E;--ch:#1C1917;--cream:#F5ECD7;--warm:#F7F0E4;--muted:#9B8E7A;--border:#E5D8C4;--danger:#C4613A;--text:#3D3530;--bg:#FAFAF8}
-body{font-family:'Jost',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+:root{
+  --white:#FFFFFF;--off-white:#F8F8F6;--light-gray:#E8E8E6;--mid-gray:#BBBBBB;
+  --dark-gray:#666666;--black:#0A0A0A;--text:#1A1A1A;
+}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--text);min-height:100vh;font-size:14px}
 a{text-decoration:none;color:inherit}
-button{cursor:pointer;font-family:'Jost',sans-serif;border:none;outline:none}
-input,select,textarea{font-family:'Jost',sans-serif;outline:none;border:1px solid var(--border);border-radius:8px;padding:10px 14px;width:100%;font-size:14px;color:var(--text);background:white;transition:border-color .2s}
-input:focus,select:focus,textarea:focus{border-color:var(--gold)}
-label{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-bottom:5px;letter-spacing:.05em;text-transform:uppercase}
+button{cursor:pointer;font-family:'Inter',sans-serif;border:none;outline:none;background:none}
+input,select,textarea{font-family:'Inter',sans-serif;outline:none;border:1px solid var(--light-gray);padding:10px 14px;width:100%;font-size:14px;color:var(--text);background:white;transition:border-color .2s;border-radius:0}
+input:focus,select:focus,textarea:focus{border-color:var(--black)}
+label{display:block;font-size:10px;font-weight:500;color:var(--dark-gray);margin-bottom:5px;letter-spacing:.1em;text-transform:uppercase}
 .frow{margin-bottom:.9rem}
 
-/* HEADER */
-header{background:var(--ch);position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.3)}
-.hinner{max-width:1200px;margin:0 auto;padding:.9rem 1.5rem;display:flex;align-items:center;gap:1.5rem}
-.hlogo{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:white;white-space:nowrap}
-.hlogo span{color:var(--gold)}
-.hnav{display:flex;gap:.25rem;flex:1;overflow-x:auto;scrollbar-width:none}
+/* ── HEADER ── */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--light-gray);
+}
+.hinner{
+  max-width:1400px;margin:0 auto;padding:0 2rem;
+  height:60px;display:flex;align-items:center;gap:1.5rem;
+}
+.hlogo{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--black);white-space:nowrap;
+}
+.hnav{display:flex;gap:0;flex:1;overflow-x:auto;scrollbar-width:none}
 .hnav::-webkit-scrollbar{display:none}
-.hcat{padding:6px 14px;border-radius:20px;font-size:.75rem;letter-spacing:.04em;color:rgba(255,255,255,.6);transition:all .2s;white-space:nowrap;background:transparent;border:1px solid transparent}
-.hcat:hover{color:white;border-color:rgba(255,255,255,.2)}
-.hcat.active{background:var(--gold);color:white;border-color:var(--gold)}
-.hright{display:flex;align-items:center;gap:.75rem;margin-left:auto}
-.btn-cart{position:relative;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;padding:7px 14px;border-radius:20px;font-size:.78rem;display:flex;align-items:center;gap:6px;transition:all .2s}
-.btn-cart:hover{background:var(--gold);border-color:var(--gold)}
-.cart-count{background:var(--gold);color:white;width:18px;height:18px;border-radius:50%;font-size:.65rem;display:inline-flex;align-items:center;justify-content:center;font-weight:600}
-.btn-auth{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.75);padding:7px 14px;border-radius:20px;font-size:.78rem;transition:all .2s}
-.btn-auth:hover{color:white;border-color:rgba(255,255,255,.5)}
+.hcat{
+  padding:6px 16px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--dark-gray);transition:color .2s;white-space:nowrap;border:none;background:none;
+  position:relative;
+}
+.hcat::after{content:'';position:absolute;bottom:0;left:16px;right:16px;height:1px;background:var(--black);transform:scaleX(0);transition:transform .2s}
+.hcat:hover{color:var(--black)}
+.hcat.active{color:var(--black)}
+.hcat.active::after{transform:scaleX(1)}
+.hright{display:flex;align-items:center;gap:1rem;margin-left:auto}
+.btn-auth{
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--dark-gray);
+  transition:color .2s;padding:4px 0;border-bottom:1px solid transparent;
+}
+.btn-auth:hover{color:var(--black);border-color:var(--black)}
+.btn-cart{
+  display:flex;align-items:center;gap:6px;
+  font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--black);
+  padding:8px 16px;border:1px solid var(--black);transition:all .2s;
+}
+.btn-cart:hover{background:var(--black);color:white}
+.cart-count{
+  background:var(--black);color:white;width:16px;height:16px;border-radius:50%;
+  font-size:.6rem;display:inline-flex;align-items:center;justify-content:center;font-weight:600;
+}
+.btn-cart:hover .cart-count{background:white;color:var(--black)}
 
-/* MAIN */
-main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
-.page-title{margin-bottom:1.5rem}
-.page-title h1{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--ch)}
-.page-title p{font-size:.82rem;color:var(--muted);margin-top:.25rem}
+/* ── MAIN ── */
+main{max-width:1400px;margin:0 auto;padding:100px 2rem 4rem}
+.page-title{margin-bottom:2.5rem;border-bottom:1px solid var(--light-gray);padding-bottom:1.5rem}
+.page-title h1{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--black);letter-spacing:.05em}
+.page-title p{font-size:.78rem;color:var(--dark-gray);margin-top:.5rem;letter-spacing:.05em;text-transform:uppercase}
 
-/* PRODUCT GRID */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.25rem}
-.pcard{background:white;border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:all .3s;cursor:pointer}
-.pcard:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(28,25,22,.1);border-color:var(--gold)}
-.pcard-img{width:100%;aspect-ratio:1;object-fit:cover;display:block}
-.pcard-img-ph{width:100%;aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2rem}
-.pcard-body{padding:1rem}
-.pcard-cat{font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
-.pcard-name{font-size:.9rem;font-weight:500;color:var(--ch);margin-bottom:.5rem;line-height:1.3}
-.pcard-price{font-size:1.05rem;font-weight:600;color:var(--ch)}
-.pcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
-.pcard-stock{font-size:.72rem;color:var(--muted)}
-.pcard-stock.out{color:var(--danger)}
-.btn-add{background:var(--ch);color:white;padding:7px 14px;border-radius:8px;font-size:.75rem;transition:all .2s}
-.btn-add:hover{background:var(--gold)}
-.btn-add:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+/* ── PRODUCT GRID ── */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px}
+@media(max-width:1024px){.pgrid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+.pcard{cursor:pointer;overflow:hidden;background:var(--off-white)}
+.pcard-img-wrap{width:100%;aspect-ratio:3/4;overflow:hidden;position:relative}
+.pcard-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.pcard:hover .pcard-img{transform:scale(1.04)}
+.pcard-img-ph{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:2rem;background:var(--light-gray);color:var(--mid-gray)}
+.pcard-body{padding:.9rem .75rem .75rem}
+.pcard-cat{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dark-gray);margin-bottom:.3rem}
+.pcard-name{font-size:.85rem;color:var(--black);margin-bottom:.4rem;line-height:1.3;font-weight:400}
+.pcard-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:400;color:var(--black)}
+.pcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem}
+.pcard-stock{font-size:.65rem;color:var(--dark-gray);letter-spacing:.04em}
+.pcard-stock.out{color:#999}
+.btn-add{
+  font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--black);
+  padding:5px 12px;border:1px solid var(--black);transition:all .2s;
+}
+.btn-add:hover{background:var(--black);color:white}
+.btn-add:disabled{border-color:var(--light-gray);color:var(--mid-gray);cursor:not-allowed}
+.btn-add:disabled:hover{background:none;color:var(--mid-gray)}
 
-/* EMPTY STATE */
-.empty{text-align:center;padding:4rem 1rem;color:var(--muted)}
-.empty-icon{font-size:3rem;margin-bottom:1rem;opacity:.4}
+/* ── EMPTY ── */
+.empty{text-align:center;padding:5rem 1rem;color:var(--dark-gray)}
+.empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.4}
 
-/* CART SIDEBAR */
-#cart-ov{position:fixed;inset:0;background:rgba(28,25,22,.5);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
+/* ── CART SIDEBAR ── */
+#cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;opacity:0;pointer-events:none;transition:opacity .3s}
 #cart-ov.open{opacity:1;pointer-events:all}
-#cart-side{position:fixed;right:0;top:0;bottom:0;width:100%;max-width:400px;background:white;z-index:301;transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15)}
+#cart-side{
+  position:fixed;right:0;top:0;bottom:0;width:100%;max-width:380px;
+  background:white;z-index:301;transform:translateX(100%);
+  transition:transform .35s cubic-bezier(.4,0,.2,1);
+  display:flex;flex-direction:column;
+}
 #cart-ov.open #cart-side{transform:translateX(0)}
-.cart-hd{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.cart-hd h2{font-size:1rem;font-weight:500}
-.cart-cl{background:none;font-size:1.5rem;color:var(--muted);transition:color .2s;padding:0;line-height:1}
-.cart-cl:hover{color:var(--ch)}
+.cart-hd{
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--light-gray);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.cart-hd h2{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;letter-spacing:.05em}
+.cart-cl{font-size:1.4rem;color:var(--mid-gray);transition:color .2s;line-height:1}
+.cart-cl:hover{color:var(--black)}
 .cart-items{flex:1;overflow-y:auto;padding:1rem 1.5rem}
-.cart-item{display:flex;gap:12px;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.cart-item{display:flex;gap:12px;align-items:flex-start;padding:.75rem 0;border-bottom:1px solid var(--light-gray)}
 .cart-item:last-child{border-bottom:none}
-.ci-img{width:56px;height:56px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--warm)}
+.ci-img{width:56px;height:68px;object-fit:cover;flex-shrink:0;background:var(--off-white)}
 .ci-info{flex:1}
-.ci-name{font-size:.83rem;font-weight:500;margin-bottom:3px}
-.ci-price{font-size:.78rem;color:var(--muted)}
-.ci-qty{display:flex;align-items:center;gap:8px;margin-top:.4rem}
-.qty-btn{width:24px;height:24px;border-radius:50%;background:var(--warm);border:1px solid var(--border);font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.qty-btn:hover{background:var(--gold);color:white;border-color:var(--gold)}
+.ci-name{font-size:.83rem;margin-bottom:3px;font-weight:400}
+.ci-price{font-size:.78rem;color:var(--dark-gray)}
+.ci-qty{display:flex;align-items:center;gap:10px;margin-top:.5rem}
+.qty-btn{
+  width:24px;height:24px;border:1px solid var(--light-gray);
+  font-size:.85rem;display:flex;align-items:center;justify-content:center;
+  transition:all .2s;color:var(--black);
+}
+.qty-btn:hover{background:var(--black);color:white;border-color:var(--black)}
 .ci-qty span{font-size:.82rem;font-weight:500;min-width:20px;text-align:center}
-.ci-rm{background:none;color:var(--muted);font-size:.72rem;transition:color .2s;margin-left:auto;align-self:flex-start;padding:2px 0}
-.ci-rm:hover{color:var(--danger)}
-.cart-empty{text-align:center;padding:2rem;color:var(--muted)}
-.cart-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--border)}
-.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
-.cart-total-row .label{font-size:.82rem;color:var(--muted)}
-.cart-total-row .amount{font-size:1.2rem;font-weight:600;font-family:'Cormorant Garamond',serif}
-.btn-checkout{width:100%;padding:12px;background:var(--ch);color:white;border-radius:10px;font-size:.9rem;font-weight:500;transition:background .2s;letter-spacing:.03em}
-.btn-checkout:hover{background:var(--gold)}
-.btn-checkout:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.ci-rm{color:var(--mid-gray);font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;transition:color .2s;margin-left:auto;align-self:flex-start;padding:2px 0}
+.ci-rm:hover{color:var(--black)}
+.cart-empty{text-align:center;padding:2rem;color:var(--dark-gray);font-size:.83rem}
+.cart-footer{padding:1.25rem 1.5rem;border-top:1px solid var(--light-gray)}
+.cart-total-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem}
+.cart-total-row .label{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--dark-gray)}
+.cart-total-row .amount{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400}
+.btn-checkout{
+  width:100%;padding:13px;background:var(--black);color:white;
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+  transition:background .2s;
+}
+.btn-checkout:hover{background:#333}
+.btn-checkout:disabled{background:var(--light-gray);color:var(--mid-gray);cursor:not-allowed}
 
-/* MODALS */
-.overlay{position:fixed;inset:0;background:rgba(28,25,22,.55);z-index:400;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+/* ── MODALS ── */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
 .overlay.open{opacity:1;pointer-events:all}
-.modal{background:white;border-radius:16px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform .25s;box-shadow:0 24px 64px rgba(0,0,0,.2)}
+.modal{background:white;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;transform:translateY(12px);transition:transform .25s}
 .overlay.open .modal{transform:translateY(0)}
-.mlg{max-width:780px}
-.mhd{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:2}
-.mhd h3{font-size:1rem;font-weight:500}
-.mcl{background:none;font-size:1.5rem;color:var(--muted);padding:0;line-height:1;transition:color .2s}
-.mcl:hover{color:var(--ch)}
+.mlg{max-width:820px}
+.mhd{
+  padding:1.25rem 1.5rem;border-bottom:1px solid var(--light-gray);
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;background:white;z-index:2;
+}
+.mhd h3{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;letter-spacing:.05em}
+.mcl{font-size:1.5rem;color:var(--mid-gray);line-height:1;transition:color .2s}
+.mcl:hover{color:var(--black)}
 .mbody{padding:1.5rem}
-.mfoot{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:.75rem;justify-content:flex-end}
+.mfoot{padding:1rem 1.5rem;border-top:1px solid var(--light-gray);display:flex;gap:.75rem;justify-content:flex-end}
 
-/* PRODUCT DETAIL MODAL */
-.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.pd-imgs{position:relative}
-.pd-main-img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--warm)}
-.pd-main-ph{width:100%;aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--warm)}
+/* ── PRODUCT DETAIL ── */
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+@media(max-width:600px){.pd-grid{grid-template-columns:1fr}}
+.pd-main-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.pd-main-ph{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--off-white);color:var(--mid-gray)}
 .pd-thumbs{display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap}
-.pd-thumb{width:48px;height:48px;border-radius:6px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:border-color .2s}
-.pd-thumb.active,.pd-thumb:hover{border-color:var(--gold)}
-.pd-info .cat{font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
-.pd-info .name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;color:var(--ch);margin-bottom:.5rem;line-height:1.2}
-.pd-info .price{font-size:1.4rem;font-weight:600;margin-bottom:.75rem}
-.pd-info .desc{font-size:.83rem;color:var(--muted);line-height:1.7;margin-bottom:1rem}
-.pd-info .stock{font-size:.78rem;margin-bottom:1rem}
-.pd-info .stock.out{color:var(--danger)}
-.pd-qty{display:flex;align-items:center;gap:12px;margin-bottom:1rem}
-.pd-qty .qb{width:32px;height:32px;border-radius:50%;background:var(--warm);border:1px solid var(--border);font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
-.pd-qty .qb:hover{background:var(--gold);color:white;border-color:var(--gold)}
-.pd-qty .qn{font-size:1.1rem;font-weight:500;min-width:28px;text-align:center}
-.btn-add-lg{width:100%;padding:12px;background:var(--ch);color:white;border-radius:10px;font-size:.9rem;font-weight:500;transition:background .2s}
-.btn-add-lg:hover{background:var(--gold)}
-.btn-add-lg:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+.pd-thumb{width:52px;height:64px;object-fit:cover;cursor:pointer;border:2px solid transparent;transition:border-color .2s}
+.pd-thumb.active,.pd-thumb:hover{border-color:var(--black)}
+.pd-info .cat{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--dark-gray);margin-bottom:.5rem}
+.pd-info .name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--black);margin-bottom:.75rem;line-height:1.2}
+.pd-info .price{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;margin-bottom:.75rem}
+.pd-info .desc{font-size:.82rem;color:var(--dark-gray);line-height:1.8;margin-bottom:1rem}
+.pd-info .stock{font-size:.72rem;letter-spacing:.06em;color:var(--dark-gray);margin-bottom:1rem}
+.pd-info .stock.out{color:#999}
+.pd-qty{display:flex;align-items:center;gap:14px;margin-bottom:1rem}
+.pd-qty .qb{
+  width:32px;height:32px;border:1px solid var(--light-gray);font-size:1rem;
+  display:flex;align-items:center;justify-content:center;transition:all .2s;
+}
+.pd-qty .qb:hover{background:var(--black);color:white;border-color:var(--black)}
+.pd-qty .qn{font-size:1rem;min-width:28px;text-align:center}
+.btn-add-lg{
+  width:100%;padding:13px;background:var(--black);color:white;
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;transition:background .2s;
+}
+.btn-add-lg:hover{background:#333}
+.btn-add-lg:disabled{background:var(--light-gray);color:var(--mid-gray);cursor:not-allowed}
 
-/* CHECKOUT STEPS */
-.steps{display:flex;gap:0;margin-bottom:1.75rem}
-.step{flex:1;text-align:center;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-bottom:.6rem;border-bottom:2px solid var(--border);transition:all .2s}
-.step.active{color:var(--gold);border-color:var(--gold);font-weight:500}
-.step.done{color:var(--text);border-color:var(--ch)}
+/* ── CHECKOUT ── */
+.steps{display:flex;gap:0;margin-bottom:1.75rem;border-bottom:1px solid var(--light-gray)}
+.step{flex:1;text-align:center;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mid-gray);padding-bottom:.75rem;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.step.active{color:var(--black);border-color:var(--black)}
+.step.done{color:var(--dark-gray);border-color:var(--dark-gray)}
 .checkout-view{display:none}.checkout-view.active{display:block}
-
-/* ORDER SUMMARY */
-.os-item{display:flex;gap:12px;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--border)}
+.os-item{display:flex;gap:12px;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--light-gray)}
 .os-item:last-child{border-bottom:none}
-.os-img{width:44px;height:44px;border-radius:6px;object-fit:cover;background:var(--warm);flex-shrink:0}
+.os-img{width:44px;height:54px;object-fit:cover;background:var(--off-white);flex-shrink:0}
 .os-info{flex:1;font-size:.82rem}
 .os-info .nm{font-weight:500}
-.os-info .q{color:var(--muted);font-size:.75rem}
-.os-price{font-weight:500;font-size:.85rem}
-
-/* BANK TRANSFER BOX */
-.bank-box{background:linear-gradient(135deg,var(--ch) 0%,#2A2218 100%);border-radius:12px;padding:1.25rem;margin:1.25rem 0;color:white}
-.bank-box .btitle{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.os-info .q{color:var(--dark-gray);font-size:.75rem}
+.os-price{font-size:.85rem}
+.bank-box{background:var(--black);padding:1.25rem;margin:1.25rem 0;color:white}
+.bank-box .btitle{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--mid-gray);margin-bottom:.75rem}
 .bank-row{display:flex;justify-content:space-between;align-items:baseline;padding:.35rem 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .bank-row:last-child{border-bottom:none}
-.bank-row .lbl{font-size:.73rem;color:rgba(255,255,255,.5)}
+.bank-row .lbl{font-size:.72rem;color:rgba(255,255,255,.5)}
 .bank-row .val{font-size:.85rem;font-weight:500;color:white}
+.conf-box{text-align:center;padding:2rem 1rem}
+.conf-icon{font-size:3rem;margin-bottom:1rem}
+.conf-num{
+  background:var(--off-white);padding:.75rem 1.5rem;display:inline-block;
+  font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;
+  color:var(--black);margin:.75rem 0;letter-spacing:.1em;
+}
+.conf-msg{font-size:.82rem;color:var(--dark-gray);line-height:1.8;max-width:320px;margin:0 auto}
 
-/* CONFIRMATION */
-.conf-box{text-align:center;padding:1.5rem 1rem}
-.conf-icon{font-size:3.5rem;margin-bottom:1rem}
-.conf-num{background:var(--warm);border-radius:10px;padding:.75rem 1.5rem;display:inline-block;font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:600;color:var(--ch);margin:.75rem 0}
-.conf-msg{font-size:.83rem;color:var(--muted);line-height:1.7;max-width:340px;margin:0 auto}
-
-/* AUTH TABS */
-.auth-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
-.atab{flex:1;padding:.75rem;text-align:center;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
-.atab.active{color:var(--ch);border-color:var(--ch)}
+/* ── AUTH ── */
+.auth-tabs{display:flex;border-bottom:1px solid var(--light-gray);margin-bottom:1.5rem}
+.atab{flex:1;padding:.75rem;text-align:center;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mid-gray);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.atab.active{color:var(--black);border-color:var(--black)}
 .auth-view{display:none}.auth-view.active{display:block}
 
-/* TOAST */
+/* ── TOAST ── */
 #toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none}
-.tmsg{background:var(--ch);color:white;padding:10px 20px;border-radius:20px;font-size:.83rem;opacity:0;transform:translateY(8px);transition:all .3s;white-space:nowrap}
+.tmsg{background:var(--black);color:white;padding:10px 20px;font-size:.78rem;letter-spacing:.04em;opacity:0;transform:translateY(8px);transition:all .3s;white-space:nowrap}
 .tmsg.show{opacity:1;transform:translateY(0)}
-.tmsg.ok{border-left:3px solid #5A7D69}
-.tmsg.err{border-left:3px solid var(--danger)}
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;border:none}
-.bp{background:var(--ch);color:white}.bp:hover{background:var(--gold)}
-.bgh{background:transparent;border:1px solid var(--border);color:var(--text)}.bgh:hover{border-color:var(--gold);color:var(--gold)}
+/* ── BTNS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;cursor:pointer;border:none}
+.bp{background:var(--black);color:white}.bp:hover{background:#333}
+.bgh{background:transparent;border:1px solid var(--light-gray);color:var(--text)}.bgh:hover{border-color:var(--black)}
 .bfull{width:100%;justify-content:center}
-
-@media(max-width:640px){
-  .pd-grid{grid-template-columns:1fr}
-  .hcat{font-size:.7rem;padding:5px 10px}
-  .pgrid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-}
 </style>
 </head>
 <body>
@@ -187,14 +239,14 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
 
 <header>
   <div class="hinner">
-    <a href="web-riga-studio.html" class="hlogo">Riga <span>Studio</span></a>
+    <a href="index.html" class="hlogo">Riga Studio</a>
     <nav class="hnav" id="catNav">
       <button class="hcat active" data-cat="" onclick="setcat('',this)">Todos</button>
     </nav>
     <div class="hright">
       <button class="btn-auth" id="btnAuth" onclick="openAuth()">Ingresar</button>
       <button class="btn-cart" onclick="openCart()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
         Carrito <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
@@ -203,11 +255,11 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
 
 <main>
   <div class="page-title">
-    <h1>Nuestra tienda</h1>
+    <h1>Nuestra Tienda</h1>
     <p>Textiles artesanales hechos en Uruguay</p>
   </div>
   <div class="pgrid" id="pgrid">
-    <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">Cargando productos...</div>
+    <div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--dark-gray)">Cargando productos...</div>
   </div>
 </main>
 
@@ -215,7 +267,7 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
 <div id="cart-ov" onclick="if(event.target===this)closeCart()">
   <aside id="cart-side">
     <div class="cart-hd">
-      <h2>Carrito <span id="cartTitleCount" style="color:var(--muted);font-weight:400"></span></h2>
+      <h2>Carrito <span id="cartTitleCount" style="color:var(--mid-gray);font-size:.9rem"></span></h2>
       <button class="cart-cl" onclick="closeCart()">×</button>
     </div>
     <div class="cart-items" id="cartItems"></div>
@@ -247,8 +299,6 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
         <div class="step" id="st2">2. Pago</div>
         <div class="step" id="st3">3. Confirmado</div>
       </div>
-
-      <!-- STEP 1: CUSTOMER DATA -->
       <div class="checkout-view active" id="cv1">
         <div class="frow"><label>Nombre completo *</label><input type="text" id="co-name" placeholder="María García"></div>
         <div class="frow"><label>Email *</label><input type="email" id="co-email" placeholder="maria@email.com"></div>
@@ -257,26 +307,21 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
         <div class="frow"><label>Ciudad *</label><input type="text" id="co-city" placeholder="Montevideo"></div>
         <div class="frow"><label>Notas adicionales</label><textarea id="co-notes" rows="2" placeholder="Instrucciones especiales, referencias..."></textarea></div>
       </div>
-
-      <!-- STEP 2: ORDER SUMMARY + BANK INFO -->
       <div class="checkout-view" id="cv2">
         <div id="order-summary"></div>
         <div class="bank-box" id="bank-box">
           <div class="btitle">Transferencia bancaria</div>
-          <div id="bank-rows"><div style="color:rgba(255,255,255,.5);font-size:.82rem">Cargando datos bancarios...</div></div>
+          <div id="bank-rows"><div style="color:rgba(255,255,255,.4);font-size:.82rem">Cargando datos bancarios...</div></div>
         </div>
-        <p style="font-size:.78rem;color:var(--muted);line-height:1.6" id="bank-notes"></p>
-        <p style="font-size:.75rem;color:var(--muted);margin-top:.75rem">Al confirmar, se creará tu pedido. Luego realizá la transferencia y envíanos el comprobante.</p>
+        <p style="font-size:.78rem;color:var(--dark-gray);line-height:1.6" id="bank-notes"></p>
+        <p style="font-size:.75rem;color:var(--mid-gray);margin-top:.75rem">Al confirmar, se creará tu pedido. Luego realizá la transferencia y envíanos el comprobante.</p>
       </div>
-
-      <!-- STEP 3: CONFIRMATION -->
       <div class="checkout-view" id="cv3">
         <div class="conf-box">
-          <div class="conf-icon">✅</div>
-          <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;margin-bottom:.5rem">¡Pedido recibido!</h2>
+          <div class="conf-icon">✓</div>
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;margin-bottom:.5rem">¡Pedido recibido!</h2>
           <div class="conf-num" id="conf-num">#——</div>
-          <p class="conf-msg">Ahora realizá la transferencia con los datos que te mostramos y envíanos el comprobante.<br><br>
-          Te contactaremos para coordinar la entrega.</p>
+          <p class="conf-msg">Realizá la transferencia con los datos que te mostramos y envíanos el comprobante.<br><br>Te contactaremos para coordinar la entrega.</p>
         </div>
       </div>
     </div>
@@ -299,14 +344,14 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
       <div class="auth-view active" id="av-login">
         <div class="frow"><label>Email</label><input type="email" id="a-email"></div>
         <div class="frow"><label>Contraseña</label><input type="password" id="a-pass" onkeydown="if(event.key==='Enter')doLogin()"></div>
-        <div id="a-err" style="color:var(--danger);font-size:.78rem;margin-bottom:.75rem;display:none"></div>
+        <div id="a-err" style="color:#999;font-size:.78rem;margin-bottom:.75rem;display:none"></div>
         <button class="btn bp bfull" onclick="doLogin()">Ingresar</button>
       </div>
       <div class="auth-view" id="av-reg">
         <div class="frow"><label>Nombre completo</label><input type="text" id="r-name"></div>
         <div class="frow"><label>Email</label><input type="email" id="r-email"></div>
         <div class="frow"><label>Contraseña (mín. 6 caracteres)</label><input type="password" id="r-pass"></div>
-        <div id="r-err" style="color:var(--danger);font-size:.78rem;margin-bottom:.75rem;display:none"></div>
+        <div id="r-err" style="color:#999;font-size:.78rem;margin-bottom:.75rem;display:none"></div>
         <button class="btn bp bfull" onclick="doRegister()">Crear cuenta</button>
       </div>
     </div>
@@ -317,9 +362,6 @@ main{max-width:1200px;margin:0 auto;padding:2rem 1.5rem}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-// ═══════════════════════════════════════════════════════════
-//  CONFIGURACIÓN FIREBASE — misma que en admin.html
-// ═══════════════════════════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyBHKGHY3vfoWBFoWNtvM-kG3uz5Iz2fWQw",
   authDomain: "riga-studio.firebaseapp.com",
@@ -333,9 +375,6 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
-// ═══════════════════════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════════════════════
 let allProds = [];
 let cart = JSON.parse(localStorage.getItem('riga_cart')||'[]');
 let currentCat = '';
@@ -345,26 +384,17 @@ let pdQty = 1;
 let pdProd = null;
 let currentUser = null;
 
-// ═══════════════════════════════════════════════════════════
-//  TOAST
-// ═══════════════════════════════════════════════════════════
-function toast(msg, type='ok') {
-  const el=document.createElement('div'); el.className='tmsg '+type; el.textContent=msg;
+function toast(msg) {
+  const el=document.createElement('div'); el.className='tmsg'; el.textContent=msg;
   document.getElementById('toast').appendChild(el);
   requestAnimationFrame(()=>el.classList.add('show'));
   setTimeout(()=>{ el.classList.remove('show'); setTimeout(()=>el.remove(),350); },2500);
 }
 
-// ═══════════════════════════════════════════════════════════
-//  MODAL UTILS
-// ═══════════════════════════════════════════════════════════
 function om(n){ document.getElementById('ov-'+n).classList.add('open'); }
 function cm(n){ document.getElementById('ov-'+n).classList.remove('open'); }
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open')); closeCart(); } });
 
-// ═══════════════════════════════════════════════════════════
-//  AUTH
-// ═══════════════════════════════════════════════════════════
 auth.onAuthStateChanged(user => {
   currentUser = user;
   const btn = document.getElementById('btnAuth');
@@ -414,9 +444,6 @@ async function doRegister() {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  LOAD PRODUCTS + CATEGORIES
-// ═══════════════════════════════════════════════════════════
 async function init() {
   await loadBankData();
   await loadProds();
@@ -427,7 +454,6 @@ async function loadProds() {
     const snap = await db.collection('products').where('active','==',true).get();
     allProds = snap.docs.map(d=>({id:d.id,...d.data()}));
   } catch(e) {
-    // Firebase not configured yet — show placeholder
     allProds = [];
   }
   buildCatNav();
@@ -456,18 +482,14 @@ function setcat(cat, el) {
 function renderProds(prods) {
   const grid=document.getElementById('pgrid');
   if(!prods.length){
-    if(firebaseConfig.apiKey==='TU_API_KEY'){
-      grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)"><div style="font-size:2.5rem;margin-bottom:1rem">🔧</div><p style="font-weight:500;margin-bottom:.5rem">Firebase no está configurado todavía</p><p style="font-size:.83rem">Completá la configuración en <code>tienda.html</code> y <code>admin.html</code>, luego agregá productos desde el panel admin.</p></div>`;
-    } else {
-      grid.innerHTML=`<div style="grid-column:1/-1"><div class="empty"><div class="empty-icon">📦</div><p>No hay productos disponibles.</p></div></div>`;
-    }
+    grid.innerHTML=`<div style="grid-column:1/-1"><div class="empty"><div class="empty-icon">○</div><p style="font-size:.85rem;letter-spacing:.05em">No hay productos disponibles.</p></div></div>`;
     return;
   }
   grid.innerHTML = prods.map(p => {
     const hasStock = (p.stock||0) > 0;
     const imgHtml = p.images&&p.images[0]
-      ? `<img class="pcard-img" src="${p.images[0]}" alt="${p.name}" loading="lazy">`
-      : `<div class="pcard-img-ph" style="background:linear-gradient(135deg,#D4A827,#A8831E)">✦</div>`;
+      ? `<div class="pcard-img-wrap"><img class="pcard-img" src="${p.images[0]}" alt="${p.name}" loading="lazy"></div>`
+      : `<div class="pcard-img-ph">○</div>`;
     return `
       <div class="pcard" onclick="openProd('${p.id}')">
         ${imgHtml}
@@ -478,7 +500,7 @@ function renderProds(prods) {
           <div class="pcard-foot">
             <span class="pcard-stock ${!hasStock?'out':''}">${hasStock ? `${p.stock} disponibles` : 'Sin stock'}</span>
             <button class="btn-add" ${!hasStock?'disabled':''} onclick="event.stopPropagation();addToCart('${p.id}',1)">
-              ${hasStock ? '+ Agregar' : 'Sin stock'}
+              ${hasStock ? '+ Agregar' : 'Agotado'}
             </button>
           </div>
         </div>
@@ -486,9 +508,6 @@ function renderProds(prods) {
   }).join('');
 }
 
-// ═══════════════════════════════════════════════════════════
-//  PRODUCT DETAIL
-// ═══════════════════════════════════════════════════════════
 function openProd(id) {
   pdProd = allProds.find(p=>p.id===id);
   if(!pdProd) return;
@@ -501,7 +520,7 @@ function openProd(id) {
       <div class="pd-imgs">
         ${imgs[0]
           ? `<img class="pd-main-img" id="pdMainImg" src="${imgs[0]}" alt="${pdProd.name}">`
-          : `<div class="pd-main-ph" style="background:linear-gradient(135deg,#D4A827,#A8831E)">✦</div>`}
+          : `<div class="pd-main-ph">○</div>`}
         ${imgs.length>1 ? `<div class="pd-thumbs">${imgs.map((url,i)=>`<img class="pd-thumb ${i===0?'active':''}" src="${url}" onclick="setPdImg('${url}',this)">`).join('')}</div>` : ''}
       </div>
       <div class="pd-info">
@@ -509,7 +528,7 @@ function openProd(id) {
         <div class="name">${pdProd.name}</div>
         <div class="price">$${Number(pdProd.price||0).toLocaleString('es-UY')}</div>
         ${pdProd.description ? `<div class="desc">${pdProd.description.replace(/\n/g,'<br>')}</div>` : ''}
-        <div class="stock ${!hasStock?'out':''}">${hasStock ? `✓ ${pdProd.stock} en stock` : '✗ Sin stock'}</div>
+        <div class="stock ${!hasStock?'out':''}">${hasStock ? `${pdProd.stock} en stock` : 'Sin stock'}</div>
         ${hasStock ? `
           <div class="pd-qty">
             <button class="qb" onclick="pdQtyAdj(-1)">−</button>
@@ -535,9 +554,6 @@ function pdQtyAdj(d) {
   document.getElementById('pdQtyN').textContent=pdQty;
 }
 
-// ═══════════════════════════════════════════════════════════
-//  CART
-// ═══════════════════════════════════════════════════════════
 function saveCart(){ localStorage.setItem('riga_cart',JSON.stringify(cart)); }
 
 function addToCart(prodId, qty) {
@@ -573,12 +589,12 @@ function updateCartUI() {
   document.getElementById('btnCheckout').disabled=!cart.length;
   const ci=document.getElementById('cartItems');
   if(!cart.length){
-    ci.innerHTML=`<div class="cart-empty"><div style="font-size:2.5rem;margin-bottom:.75rem">🛒</div><p style="font-size:.83rem">Tu carrito está vacío</p></div>`;
+    ci.innerHTML=`<div class="cart-empty"><p style="letter-spacing:.05em">Tu carrito está vacío</p></div>`;
     return;
   }
   ci.innerHTML=cart.map(c=>`
     <div class="cart-item">
-      ${c.image?`<img class="ci-img" src="${c.image}" alt="${c.name}">`:`<div class="ci-img" style="display:flex;align-items:center;justify-content:center;font-size:1.5rem">✦</div>`}
+      ${c.image?`<img class="ci-img" src="${c.image}" alt="${c.name}">`:`<div class="ci-img" style="background:var(--off-white)"></div>`}
       <div class="ci-info">
         <div class="ci-name">${c.name}</div>
         <div class="ci-price">$${Number(c.price).toLocaleString('es-UY')} c/u</div>
@@ -595,9 +611,6 @@ function updateCartUI() {
 function openCart(){ document.getElementById('cart-ov').classList.add('open'); document.body.style.overflow='hidden'; }
 function closeCart(){ document.getElementById('cart-ov').classList.remove('open'); document.body.style.overflow=''; }
 
-// ═══════════════════════════════════════════════════════════
-//  BANK DATA
-// ═══════════════════════════════════════════════════════════
 async function loadBankData() {
   try {
     const doc=await db.collection('settings').doc('bank_transfer').get();
@@ -612,17 +625,13 @@ function renderBankBox() {
   ].filter(r=>r[1]);
   document.getElementById('bank-rows').innerHTML = rows.length
     ? rows.map(r=>`<div class="bank-row"><span class="lbl">${r[0]}</span><span class="val">${r[1]}</span></div>`).join('')
-    : '<div style="color:rgba(255,255,255,.5);font-size:.82rem">Contactanos para coordinar el pago.</div>';
+    : '<div style="color:rgba(255,255,255,.4);font-size:.82rem">Contactanos para coordinar el pago.</div>';
   document.getElementById('bank-notes').textContent = bankData.notes||'';
 }
 
-// ═══════════════════════════════════════════════════════════
-//  CHECKOUT
-// ═══════════════════════════════════════════════════════════
 function openCheckout() {
   if(!cart.length) return;
   coStep=1;
-  // Pre-fill name/email if logged in
   if(currentUser) {
     document.getElementById('co-name').value=currentUser.displayName||'';
     document.getElementById('co-email').value=currentUser.email||'';
@@ -650,10 +659,10 @@ function renderCoStep() {
     const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
     document.getElementById('order-summary').innerHTML=`
       <div style="margin-bottom:1rem">
-        ${cart.map(c=>`<div class="os-item"><img class="os-img" src="${c.image||''}" onerror="this.style.display='none'">${c.image?'':''}<div class="os-info"><div class="nm">${c.name}</div><div class="q">x${c.qty}</div></div><div class="os-price">$${Number(c.price*c.qty).toLocaleString('es-UY')}</div></div>`).join('')}
-        <div style="display:flex;justify-content:space-between;padding:.75rem 0;border-top:2px solid var(--border);margin-top:.5rem">
-          <strong>Total a transferir</strong>
-          <strong style="font-size:1.1rem">$${total.toLocaleString('es-UY')}</strong>
+        ${cart.map(c=>`<div class="os-item"><img class="os-img" src="${c.image||''}" onerror="this.style.display='none'"><div class="os-info"><div class="nm">${c.name}</div><div class="q">x${c.qty}</div></div><div class="os-price">$${Number(c.price*c.qty).toLocaleString('es-UY')}</div></div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:.75rem 0;border-top:2px solid var(--black);margin-top:.5rem">
+          <strong style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase">Total a transferir</strong>
+          <strong style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400">$${total.toLocaleString('es-UY')}</strong>
         </div>
       </div>`;
     renderBankBox();
@@ -666,8 +675,8 @@ function coNext() {
     const email=document.getElementById('co-email').value.trim();
     const addr=document.getElementById('co-addr').value.trim();
     const city=document.getElementById('co-city').value.trim();
-    if(!name||!email||!addr||!city){ toast('Completá los campos obligatorios (*)','err'); return; }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Email inválido','err'); return; }
+    if(!name||!email||!addr||!city){ toast('Completá los campos obligatorios (*)'); return; }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Email inválido'); return; }
     coStep=2;
   } else if(coStep===2) {
     confirmOrder(); return;
@@ -698,14 +707,11 @@ async function confirmOrder() {
     coStep=3;
     renderCoStep();
   } catch(e){
-    toast('Error al enviar el pedido: '+e.message,'err');
+    toast('Error al enviar el pedido: '+e.message);
     if(btn){ btn.disabled=false; btn.textContent='Confirmar pedido →'; }
   }
 }
 
-// ═══════════════════════════════════════════════════════════
-//  BOOT
-// ═══════════════════════════════════════════════════════════
 updateCartUI();
 init();
 </script>
