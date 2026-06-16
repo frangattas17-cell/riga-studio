@@ -84,6 +84,7 @@ main{max-width:1400px;margin:0 auto;padding:100px 2rem 4rem}
 .pcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem}
 .pcard-stock{font-size:.65rem;color:var(--dark-gray);letter-spacing:.04em}
 .pcard-stock.out{color:#999}
+.pcard-stock.low{color:#c0392b;font-weight:500}
 .btn-add{
   font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--black);
   padding:5px 12px;border:1px solid var(--black);transition:all .2s;
@@ -503,7 +504,7 @@ function renderProds(prods) {
           <div class="pcard-name">${p.name}</div>
           <div class="pcard-price">$${Number(p.price||0).toLocaleString('es-UY')}</div>
           <div class="pcard-foot">
-            <span class="pcard-stock ${!hasStock?'out':''}">${hasStock ? `${p.stock} disponibles` : 'Sin stock'}</span>
+            <span class="pcard-stock ${!hasStock?'out':p.stock<=3?'low':''}">${!hasStock ? 'Agotado' : p.stock<=3 ? `⚡ Últimas ${p.stock}` : `${p.stock} disponibles`}</span>
             <button class="btn-add" ${!hasStock?'disabled':''} onclick="event.stopPropagation();addToCart('${p.id}',1)">
               ${hasStock ? '+ Agregar' : 'Agotado'}
             </button>
