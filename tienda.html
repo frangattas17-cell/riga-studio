@@ -3,7 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Riga Studio — Tienda</title>
+<title>Riga Studio — Tienda | Textiles artesanales Uruguay</title>
+<meta property="og:title" content="Riga Studio — Tienda | Textiles artesanales Uruguay">
+<meta property="og:description" content="Individuales, almohadas, bandejas y más. Diseñados y fabricados en Uruguay. Drops exclusivos.">
+<meta property="og:image" content="https://dcdn-us.mitiendanube.com/stores/007/435/145/products/whatsapp-image-2026-05-24-at-11-52-06-am-6c70b77d164d6d5b6e17796343555751-1024-1024.webp">
+<meta property="og:url" content="https://frangattas17-cell.github.io/riga-studio/tienda.html">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='400' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
@@ -546,7 +552,7 @@ function openProd(id) {
         ${imgs[0]
           ? `<img class="pd-main-img" id="pdMainImg" src="${imgs[0]}" alt="${pdProd.name}">`
           : `<div class="pd-main-ph">○</div>`}
-        ${imgs.length>1 ? `<div class="pd-thumbs">${imgs.map((url,i)=>`<img class="pd-thumb ${i===0?'active':''}" src="${url}" onclick="setPdImg('${url}',this)">`).join('')}</div>` : ''}
+        ${imgs.length>1 ? `<div class="pd-thumbs">${imgs.map((url,i)=>`<img class="pd-thumb ${i===0?'active':''}" src="${url}" onclick="setPdImg('${url}',this)" loading="lazy">`).join('')}</div>` : ''}
       </div>
       <div class="pd-info">
         <div class="cat">${pdProd.category||''}</div>
@@ -621,7 +627,7 @@ function updateCartUI() {
   }
   ci.innerHTML=cart.map(c=>`
     <div class="cart-item">
-      ${c.image?`<img class="ci-img" src="${c.image}" alt="${c.name}">`:`<div class="ci-img" style="background:var(--off-white)"></div>`}
+      ${c.image?`<img class="ci-img" src="${c.image}" alt="${c.name}" loading="lazy">`:`<div class="ci-img" style="background:var(--off-white)"></div>`}
       <div class="ci-info">
         <div class="ci-name">${c.name}</div>
         <div class="ci-price">$${Number(c.price).toLocaleString('es-UY')} c/u</div>
@@ -686,7 +692,7 @@ function renderCoStep() {
     const total=cart.reduce((s,c)=>s+c.price*c.qty,0);
     document.getElementById('order-summary').innerHTML=`
       <div style="margin-bottom:1rem">
-        ${cart.map(c=>`<div class="os-item"><img class="os-img" src="${c.image||''}" onerror="this.style.display='none'"><div class="os-info"><div class="nm">${c.name}</div><div class="q">x${c.qty}</div></div><div class="os-price">$${Number(c.price*c.qty).toLocaleString('es-UY')}</div></div>`).join('')}
+        ${cart.map(c=>`<div class="os-item"><img class="os-img" src="${c.image||''}" onerror="this.style.display='none'" loading="lazy"><div class="os-info"><div class="nm">${c.name}</div><div class="q">x${c.qty}</div></div><div class="os-price">$${Number(c.price*c.qty).toLocaleString('es-UY')}</div></div>`).join('')}
         <div style="display:flex;justify-content:space-between;padding:.75rem 0;border-top:2px solid var(--black);margin-top:.5rem">
           <strong style="font-size:.78rem;letter-spacing:.08em;text-transform:uppercase">Total a transferir</strong>
           <strong style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400">$${total.toLocaleString('es-UY')}</strong>

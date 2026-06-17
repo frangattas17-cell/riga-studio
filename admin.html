@@ -584,7 +584,7 @@ function renderProds(prods) {
   tb.innerHTML = prods.map(p => `
     <tr>
       <td><div style="display:flex;align-items:center;gap:10px">
-        ${p.images&&p.images[0]?`<img src="${p.images[0]}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0">`:`<div style="width:40px;height:40px;border-radius:6px;background:var(--border);flex-shrink:0"></div>`}
+        ${p.images&&p.images[0]?`<img src="${p.images[0]}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;flex-shrink:0" loading="lazy">`:`<div style="width:40px;height:40px;border-radius:6px;background:var(--border);flex-shrink:0"></div>`}
         <div><div style="font-weight:500;font-size:.83rem">${p.name}</div><div style="font-size:.72rem;color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.description||''}</div></div>
       </div></td>
       <td><span style="font-size:.75rem">${p.category||'—'}</span></td>
@@ -787,7 +787,7 @@ function openOM(id) {
     <div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem">Productos</div>
     ${(o.items||[]).map(it=>`
       <div class="oi-row">
-        ${it.image?`<img class="oi-img" src="${it.image}" alt="${it.name}">`:`<div class="oi-noimg">📦</div>`}
+        ${it.image?`<img class="oi-img" src="${it.image}" alt="${it.name}" loading="lazy">`:`<div class="oi-noimg">📦</div>`}
         <div style="flex:1"><div style="font-weight:500;font-size:.83rem">${it.name}</div><div style="font-size:.75rem;color:var(--muted)">x${it.quantity} · $${Number(it.price).toLocaleString('es-UY')} c/u</div></div>
         <div style="font-weight:500">$${Number(it.price*it.quantity).toLocaleString('es-UY')}</div>
       </div>`).join('')}
@@ -802,7 +802,7 @@ function openOM(id) {
     document.getElementById('om-body').innerHTML += `
       <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
         <div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem">Comprobante de pago</div>
-        <img src="${o.comprobanteURL}" style="max-width:100%;max-height:200px;object-fit:contain;border:1px solid var(--border);cursor:zoom-in;display:block" onclick="openImgFull('${o.comprobanteURL}')">
+        <img src="${o.comprobanteURL}" style="max-width:100%;max-height:200px;object-fit:contain;border:1px solid var(--border);cursor:zoom-in;display:block" loading="lazy" onclick="openImgFull('${o.comprobanteURL}')">
         <a href="${o.comprobanteURL}" target="_blank" class="btn bgh bsm" style="display:inline-flex;margin-top:.5rem">Ver en tamaño completo →</a>
       </div>`;
   } else {
@@ -938,7 +938,7 @@ function renderGallery() {
     const labelClass = GAL_LABELS[img.label] || 'gl-web';
     return `<div class="gal-card">
       ${used ? `<div class="gal-used">En uso</div>` : ''}
-      <img class="gal-thumb" src="${img.url}" alt="${img.name}" onclick="openImgFull('${img.url}')">
+      <img class="gal-thumb" src="${img.url}" alt="${img.name}" loading="lazy" onclick="openImgFull('${img.url}')">
       <div class="gal-info">
         <div class="gal-name" title="${img.name}">${img.name}</div>
         <div class="gal-meta">
