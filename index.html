@@ -452,10 +452,10 @@
     </div>
     <div class="reveal-right">
       <div class="sobre-stats">
-        <div class="sobre-stat"><div class="stat-num counter" data-target="64">0</div><div class="stat-label">Diseños únicos</div></div>
-        <div class="sobre-stat"><div class="stat-num counter" data-target="1995">0</div><div class="stat-label">Seguidores</div></div>
+        <div class="sobre-stat"><div class="stat-num counter" data-target="30" data-suffix="+">0</div><div class="stat-label">Diseños únicos</div></div>
+        <div class="sobre-stat"><div class="stat-num counter" data-target="2000" data-suffix="+">0</div><div class="stat-label">Seguidores</div></div>
         <div class="sobre-stat"><div class="stat-num">5+</div><div class="stat-label">Categorías</div></div>
-        <div class="sobre-stat"><div class="stat-num counter" data-target="100">0</div><div class="stat-label">% Uruguay</div></div>
+        <div class="sobre-stat"><div class="stat-num counter" data-target="100" data-suffix="%">0</div><div class="stat-label">Uruguay</div></div>
       </div>
     </div>
   </div>
@@ -645,15 +645,15 @@
         Escribir por WhatsApp
       </a>
     </div>
-    <form class="contacto-form reveal-right" onsubmit="handleForm(event)">
+    <form class="contacto-form reveal-right" id="contactForm">
       <div class="form-row">
-        <div class="form-group"><label>Nombre</label><input type="text" placeholder="Tu nombre"></div>
-        <div class="form-group"><label>Teléfono</label><input type="tel" placeholder="+598..."></div>
+        <div class="form-group"><label>Nombre</label><input type="text" name="nombre" placeholder="Tu nombre" required></div>
+        <div class="form-group"><label>Teléfono</label><input type="tel" name="telefono" placeholder="+598..."></div>
       </div>
-      <div class="form-group"><label>Email</label><input type="email" placeholder="tu@email.com"></div>
+      <div class="form-group"><label>Email</label><input type="email" name="email" placeholder="tu@email.com" required></div>
       <div class="form-group">
         <label>¿Qué te interesa?</label>
-        <select>
+        <select name="interes">
           <option value="">Seleccionar...</option>
           <option>Individuales</option>
           <option>Fundas de almohadas</option>
@@ -663,8 +663,9 @@
           <option>Quiero enterarme del próximo drop</option>
         </select>
       </div>
-      <div class="form-group"><label>Mensaje</label><textarea placeholder="Contanos qué estás buscando, colores, tamaños..."></textarea></div>
+      <div class="form-group"><label>Mensaje</label><textarea name="mensaje" placeholder="Contanos qué estás buscando, colores, tamaños..."></textarea></div>
       <button type="submit" class="form-submit" id="formBtn">Enviar consulta →</button>
+      <p id="formSuccess" style="display:none;font-size:.8rem;color:var(--dark-gray);margin-top:.75rem;letter-spacing:.04em">✓ Mensaje enviado. Te respondemos pronto.</p>
     </form>
   </div>
 </section>
@@ -922,12 +923,12 @@
 
   // ── COUNTERS ──────────────────────────────────────────────────
   function runCounter(el) {
-    const target = parseInt(el.dataset.target), dur = 1600;
+    const target = parseInt(el.dataset.target), suffix = el.dataset.suffix || '', dur = 1600;
     let cur = 0; const step = target / (dur / 16);
     const t = setInterval(() => {
       cur += step;
-      if (cur >= target) { el.textContent = target.toLocaleString('es-UY'); clearInterval(t); }
-      else el.textContent = Math.floor(cur).toLocaleString('es-UY');
+      if (cur >= target) { el.textContent = target.toLocaleString('es-UY') + suffix; clearInterval(t); }
+      else el.textContent = Math.floor(cur).toLocaleString('es-UY') + suffix;
     }, 16);
   }
   const counterObs = new IntersectionObserver(entries => {
@@ -941,20 +942,49 @@
     document.querySelectorAll('#hero .reveal-left').forEach(el => el.classList.add('visible'));
   }, 200);
 
-  // ── FORM ──────────────────────────────────────────────────────
-  function handleForm(e) {
+  // ── FORM (Formspree) ──────────────────────────────────────────
+  const FORMSPREE_URL = 'https://formspree.io/f/ACTION_URL'; // reemplazá ACTION_URL con tu endpoint real
+
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('formBtn');
-    btn.textContent = '✓ Mensaje enviado';
-    btn.style.opacity = '0.6';
-    setTimeout(() => { btn.textContent = 'Enviar consulta →'; btn.style.opacity = ''; }, 3000);
-  }
-  function handleNotify() {
-    const input = document.getElementById('notifyEmail');
-    if (input.value && input.value.includes('@')) {
-      input.value = '¡Listo! Te avisamos pronto.';
-      setTimeout(() => { input.value = ''; }, 3000);
+    const success = document.getElementById('formSuccess');
+    btn.textContent = 'Enviando...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(this)
+      });
+      if (res.ok) {
+        success.style.display = 'block';
+        this.reset();
+        btn.textContent = '✓ Enviado';
+      } else {
+        btn.textContent = 'Error — intentá de nuevo';
+        btn.disabled = false;
+      }
+    } catch {
+      btn.textContent = 'Error — intentá de nuevo';
+      btn.disabled = false;
     }
+  });
+
+  async function handleNotify() {
+    const input = document.getElementById('notifyEmail');
+    const email = input.value.trim();
+    if (!email || !email.includes('@')) return;
+    try {
+      await fetch(FORMSPREE_URL, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, tipo: 'notificacion_drop' })
+      });
+    } catch {}
+    input.value = '¡Listo! Te avisamos pronto.';
+    setTimeout(() => { input.value = ''; }, 3000);
+  }
   }
 </script>
 </body>
