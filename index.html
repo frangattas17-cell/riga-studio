@@ -210,7 +210,7 @@
     /* ── PRODUCTOS ─────────────────────────────────────────────── */
     #productos { padding: 110px 0; background: var(--white); }
     .productos-header { max-width: 1200px; margin: 0 auto 3rem; padding: 0 5%; display: flex; justify-content: space-between; align-items: flex-end; }
-    .productos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--light-gray); border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); }
+    .productos-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--light-gray); border-top: 1px solid var(--light-gray); border-bottom: 1px solid var(--light-gray); min-height: 200px; }
     .product-card { background: var(--white); overflow: hidden; position: relative; }
     .product-img { width: 100%; aspect-ratio: 3/4; overflow: hidden; position: relative; }
     .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
@@ -237,7 +237,7 @@
     .galeria-header { max-width: 1200px; margin: 0 auto 3rem; display: flex; justify-content: space-between; align-items: flex-end; }
     .galeria-header a { color: var(--black); font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid var(--black); padding-bottom: 2px; transition: opacity 0.2s; }
     .galeria-header a:hover { opacity: 0.5; }
-    .galeria-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 200px); gap: 2px; background: var(--light-gray); }
+    .galeria-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(3, 200px); gap: 2px; background: var(--light-gray); min-height: 200px; }
     .galeria-item { position: relative; overflow: hidden; cursor: pointer; }
     .galeria-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
     .galeria-item:nth-child(6) { grid-column: span 2; }
@@ -306,14 +306,18 @@
     .footer-copy { font-size: 0.6rem; color: var(--mid-gray); letter-spacing: 0.12em; text-transform: uppercase; }
 
     /* ── ANIMATIONS ────────────────────────────────────────────── */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    .reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-left { opacity: 0; transform: translateX(-28px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .reveal-left.visible { opacity: 1; transform: translateX(0); }
-    .reveal-right { opacity: 0; transform: translateX(36px); transition: opacity 0.9s ease, transform 0.9s ease; }
+    .reveal-right { opacity: 0; transform: translateX(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .reveal-right.visible { opacity: 1; transform: translateX(0); }
-    .stagger-child { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .stagger-child { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .stagger-child.visible { opacity: 1; transform: translateY(0); }
+    /* Reducir motion para usuarios que lo prefieren */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right, .stagger-child { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
 
     /* ── RESPONSIVE ────────────────────────────────────────────── */
     @media (max-width: 1100px) {
@@ -905,20 +909,41 @@
   }, 100);
 
   // ── REVEAL ANIMATIONS ─────────────────────────────────────────
+  // PASO 2: fallback — cualquier .reveal que no haya disparado en 1.5s se fuerza visible
+  function forceVisibleFallback() {
+    document.querySelectorAll('.reveal,.reveal-left,.reveal-right,.stagger-child').forEach(el => {
+      if (!el.classList.contains('visible')) {
+        console.log('[reveal-fallback] forzando visible:', el.className, el);
+        el.classList.add('visible');
+      }
+    });
+  }
+  setTimeout(forceVisibleFallback, 1500);
+
   const revealObs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => revealObs.observe(el));
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        console.log('[revealObs] disparó:', e.target.className);
+        e.target.classList.add('visible');
+        revealObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+  document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => {
+    console.log('[revealObs] observando:', el.className);
+    revealObs.observe(el);
+  });
 
   // ── STAGGER ───────────────────────────────────────────────────
   const staggerObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
+        console.log('[staggerObs] disparó:', e.target.className);
         e.target.querySelectorAll('.stagger-child').forEach((c,i) => setTimeout(() => c.classList.add('visible'), i*120));
         staggerObs.unobserve(e.target);
       }
     });
-  }, { threshold: 0.05 });
+  }, { threshold: 0.02, rootMargin: '0px 0px 0px 0px' });
   document.querySelectorAll('.testimonios-grid,.galeria-grid').forEach(el => staggerObs.observe(el));
 
   // ── COUNTERS ──────────────────────────────────────────────────
