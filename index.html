@@ -55,6 +55,7 @@
     ]
   }
   </script>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='400' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -83,9 +84,27 @@
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: background 0.5s, border-color 0.5s; }
     nav.scrolled { background: var(--white); border-bottom: 1px solid var(--light-gray); }
     .nav-top { display: flex; align-items: center; justify-content: space-between; padding: 0 4%; height: 60px; position: relative; }
-    .nav-hamburger { background: none; border: none; cursor: pointer; padding: 4px; display: flex; flex-direction: column; gap: 5px; }
-    .nav-hamburger span { display: block; width: 22px; height: 1px; background: var(--white); transition: background 0.5s; }
+    .nav-hamburger { background: none; border: none; cursor: pointer; padding: 4px; display: flex; flex-direction: column; gap: 5px; z-index: 101; }
+    .nav-hamburger span { display: block; width: 22px; height: 1px; background: var(--white); transition: background 0.5s, transform 0.3s, opacity 0.3s; }
     nav.scrolled .nav-hamburger span { background: var(--black); }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .nav-mobile-menu {
+      position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+      background: var(--white); border-bottom: 1px solid var(--light-gray);
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .nav-mobile-menu.open { max-height: 400px; }
+    .nav-mobile-links { display: flex; flex-direction: column; padding: 1.5rem 5%; gap: 0; }
+    .nav-mobile-link {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--black); text-decoration: none; padding: 1rem 0;
+      border-bottom: 1px solid var(--light-gray); transition: opacity 0.2s;
+    }
+    .nav-mobile-link:last-child { border-bottom: none; }
+    .nav-mobile-link:hover { opacity: 0.5; }
     .nav-logo {
       position: absolute; left: 50%; transform: translateX(-50%);
       text-decoration: none; line-height: 0;
@@ -374,6 +393,18 @@
     <span class="nav-search-icon">⌕</span>
   </div>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="nav-mobile-menu" id="mobileMenu">
+  <div class="nav-mobile-links">
+    <a href="#sobre" class="nav-mobile-link" onclick="closeMobileMenu()">Nosotras</a>
+    <a href="#drops" class="nav-mobile-link" onclick="closeMobileMenu()">Sistema drops</a>
+    <a href="tienda.html" class="nav-mobile-link">Tienda</a>
+    <a href="#galeria" class="nav-mobile-link" onclick="closeMobileMenu()">Galería</a>
+    <a href="#contacto" class="nav-mobile-link" onclick="closeMobileMenu()">Contacto</a>
+    <a href="https://www.instagram.com/riga__studio/" target="_blank" class="nav-mobile-link">Instagram</a>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -901,6 +932,18 @@
     document.getElementById('scrollProgress').style.width = (scrollY / max * 100) + '%';
     navbar.classList.toggle('scrolled', scrollY > window.innerHeight * 0.75);
   }, { passive: true });
+
+  // ── MOBILE MENU ───────────────────────────────────────────────
+  const hamburger = document.querySelector('.nav-hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
 
   // ── HERO BG ZOOM INICIAL ──────────────────────────────────────
   setTimeout(() => {
