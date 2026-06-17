@@ -145,6 +145,28 @@ tr:hover td{background:var(--off-white)}
 .setcard{background:white;border:1px solid var(--border);padding:1.5rem;max-width:500px}
 .setcard h3{font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
 
+/* GALLERY */
+.gal-filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.gal-ftag{padding:5px 14px;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border);background:white;color:var(--dark);cursor:pointer;transition:all .2s}
+.gal-ftag.active,.gal-ftag:hover{background:var(--black);color:white;border-color:var(--black)}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--border)}
+.gal-card{background:white;overflow:hidden;position:relative}
+.gal-thumb{width:100%;aspect-ratio:1;object-fit:cover;display:block;cursor:zoom-in;transition:transform .3s}
+.gal-card:hover .gal-thumb{transform:scale(1.04)}
+.gal-info{padding:.6rem .75rem;border-top:1px solid var(--border)}
+.gal-name{font-size:.7rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:.35rem}
+.gal-meta{display:flex;align-items:center;justify-content:space-between;gap:.35rem}
+.gal-label{font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;padding:2px 7px;border:1px solid}
+.gl-producto{background:#EEF2FF;color:#3730A3;border-color:#C7D2FE}
+.gl-marketing{background:#FFF7ED;color:#9A3412;border-color:#FED7AA}
+.gl-instagram{background:#FDF2F8;color:#9D174D;border-color:#FBCFE8}
+.gl-web{background:#F0FDF4;color:#166534;border-color:#BBF7D0}
+.gal-used{position:absolute;top:.4rem;left:.4rem;background:var(--black);color:white;font-size:.55rem;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
+.gal-actions{display:flex;gap:2px;margin-top:.4rem}
+.gal-actions button{flex:1;padding:4px 0;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;background:white;border:1px solid var(--border);color:var(--dark);cursor:pointer;transition:all .15s}
+.gal-actions button:hover{background:var(--black);color:white;border-color:var(--black)}
+.gal-actions .del:hover{background:var(--danger);border-color:var(--danger)}
+
 @media(max-width:768px){
   .sidebar{width:56px}
   .sbrand .name,.sbrand .sub,.nitem span{display:none}
@@ -192,6 +214,10 @@ tr:hover td{background:var(--off-white)}
       <div class="nitem" data-view="orders" onclick="gv('orders',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
         <span>Pedidos</span>
+      </div>
+      <div class="nitem" data-view="gallery" onclick="gv('gallery',this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        <span>Imágenes</span>
       </div>
       <div class="nitem" data-view="settings" onclick="gv('settings',this)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
@@ -259,6 +285,20 @@ tr:hover td{background:var(--off-white)}
         </div>
       </div>
 
+      <!-- GALLERY -->
+      <div class="view" id="view-gallery">
+        <div class="gal-filters" id="gal-filters">
+          <button class="gal-ftag active" data-label="" onclick="setGalFilter('',this)">Todas</button>
+          <button class="gal-ftag" data-label="Producto" onclick="setGalFilter('Producto',this)">Producto</button>
+          <button class="gal-ftag" data-label="Marketing" onclick="setGalFilter('Marketing',this)">Marketing</button>
+          <button class="gal-ftag" data-label="Instagram" onclick="setGalFilter('Instagram',this)">Instagram</button>
+          <button class="gal-ftag" data-label="Web" onclick="setGalFilter('Web',this)">Web</button>
+        </div>
+        <div class="gal-grid" id="gal-grid">
+          <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">Cargando imágenes...</div>
+        </div>
+      </div>
+
       <!-- SETTINGS -->
       <div class="view" id="view-settings">
         <div class="setcard">
@@ -319,6 +359,43 @@ tr:hover td{background:var(--off-white)}
       <button class="btn bp" id="btn-sp" onclick="saveProd()">Guardar producto</button>
     </div>
   </div>
+</div>
+
+<!-- MODAL GALERÍA UPLOAD -->
+<div class="overlay" id="ov-gallery" onclick="if(event.target===this)cm('gallery')">
+  <div class="modal mlg">
+    <div class="mhd"><h3>Subir imágenes</h3><button class="mcl" onclick="cm('gallery')">×</button></div>
+    <div class="mbody">
+      <div class="frow">
+        <label>Etiqueta</label>
+        <select id="gal-label">
+          <option value="Producto">Producto</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Web">Web</option>
+        </select>
+      </div>
+      <div class="upzone" id="gal-upzone">
+        <input type="file" id="gal-files" accept="image/jpeg,image/png,image/webp" multiple onchange="onGalFiles(event)">
+        <div class="icon">🖼️</div>
+        <p>Click o arrastrá imágenes aquí<br><small style="opacity:.7">JPG, PNG, WebP · máx 10MB cada una</small></p>
+      </div>
+      <div class="previews" id="gal-prev"></div>
+      <div id="gal-prog" style="display:none;margin-top:.75rem">
+        <div style="height:4px;background:var(--border);overflow:hidden"><div id="gal-bar" style="height:100%;background:var(--black);width:0%;transition:width .3s"></div></div>
+        <p id="gal-txt" style="font-size:.72rem;color:var(--muted);margin-top:4px">Subiendo...</p>
+      </div>
+    </div>
+    <div class="mfoot">
+      <button class="btn bgh" onclick="cm('gallery')">Cancelar</button>
+      <button class="btn bp" id="btn-gal-upload" onclick="uploadGalleryImgs()">Subir imágenes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL IMAGEN FULLSIZE -->
+<div class="overlay" id="ov-imgfull" onclick="cm('imgfull')" style="background:rgba(0,0,0,.9)">
+  <img id="imgfull-src" src="" style="max-width:90vw;max-height:90vh;object-fit:contain">
 </div>
 
 <!-- MODAL PEDIDO -->
@@ -422,13 +499,18 @@ async function init() {
   await loadProds();
   loadOrdersRT();
   loadSettings();
+  loadGallery();
 }
 
 // ═══════════════════════════════════════════════════════════
 //  NAVIGATION
 // ═══════════════════════════════════════════════════════════
-const vTitles = {dashboard:'Dashboard', products:'Productos', orders:'Pedidos', settings:'Configuración'};
-const vActions = {products:`<button class="btn bp" onclick="openPM()">+ Nuevo producto</button>`, dashboard:'', orders:'', settings:''};
+const vTitles = {dashboard:'Dashboard', products:'Productos', orders:'Pedidos', gallery:'Imágenes', settings:'Configuración'};
+const vActions = {
+  products:`<button class="btn bp" onclick="openPM()">+ Nuevo producto</button>`,
+  gallery:`<button class="btn bp" onclick="galNewFiles=[];document.getElementById('gal-prev').innerHTML='';om('gallery')">+ Subir imágenes</button>`,
+  dashboard:'', orders:'', settings:''
+};
 
 function gv(name, el) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -714,7 +796,47 @@ function openOM(id) {
     </div>
     ${o.notes?`<div style="margin-top:1rem;padding:.75rem;background:#FFFBF0;border-radius:8px;border-left:3px solid var(--gold)"><div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:3px">Nota del cliente</div><div style="font-size:.82rem">${o.notes}</div></div>`:''}
   `;
-  const acts=(NEXT[o.status]||[]);
+  // Comprobante
+  if (o.comprobanteURL) {
+    document.getElementById('om-body').innerHTML += `
+      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.6rem">Comprobante de pago</div>
+        <img src="${o.comprobanteURL}" style="max-width:100%;max-height:200px;object-fit:contain;border:1px solid var(--border);cursor:zoom-in;display:block" onclick="openImgFull('${o.comprobanteURL}')">
+        <a href="${o.comprobanteURL}" target="_blank" class="btn bgh bsm" style="display:inline-flex;margin-top:.5rem">Ver en tamaño completo →</a>
+      </div>`;
+  } else {
+    document.getElementById('om-body').innerHTML += `
+      <div style="margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+        <div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.4rem">Comprobante de pago</div>
+        <div style="font-size:.78rem;color:var(--muted);font-style:italic">Sin comprobante adjunto</div>
+      </div>`;
+  }
+
+  // Flujo de estados visual
+  const steps = ['pending','confirmed','preparing','shipped','delivered'];
+  const curIdx = steps.indexOf(o.status);
+  document.getElementById('om-body').innerHTML += `
+    <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border)">
+      <div style="font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem">Progreso del pedido</div>
+      <div style="display:flex;align-items:center;gap:0;overflow-x:auto">
+        ${steps.map((s,i) => {
+          const done = i < curIdx;
+          const active = i === curIdx;
+          const label = SL[s].replace('Pendiente de pago','Pendiente').replace('Pago confirmado','Confirmado').replace('En preparación','Preparando');
+          return `<div style="display:flex;align-items:center;flex:1;min-width:0">
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1">
+              <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:600;flex-shrink:0;
+                background:${active?'var(--black)':done?'var(--black)':'var(--border)'};
+                color:${active||done?'white':'var(--muted)'}">${done?'✓':i+1}</div>
+              <div style="font-size:.58rem;letter-spacing:.04em;text-transform:uppercase;color:${active?'var(--black)':done?'var(--dark)':'var(--muted)'};margin-top:.3rem;text-align:center;white-space:nowrap">${label}</div>
+            </div>
+            ${i<steps.length-1?`<div style="height:1px;flex:1;background:${done?'var(--black)':'var(--border)'};margin-bottom:1rem"></div>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`;
+
+  const acts = (NEXT[o.status]||[]);
   document.getElementById('om-foot').innerHTML=`
     <button class="btn bgh" onclick="cm('order')">Cerrar</button>
     ${acts.map(s=>`<button class="btn ${AS[s]||'bgh'}" onclick="updOrder('${id}','${s}')">${AL[s]||s}</button>`).join('')}
@@ -723,9 +845,19 @@ function openOM(id) {
 }
 
 async function updOrder(id, status) {
+  if (status === 'confirmed') {
+    if (!confirm('¿Confirmás el pago de este pedido? Esto notifica internamente que el pago fue recibido.')) return;
+  }
+  if (status === 'cancelled') {
+    if (!confirm('¿Cancelar este pedido? Esta acción no se puede deshacer.')) return;
+  }
   try {
-    await db.collection('orders').doc(id).update({status, updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    toast(`Estado: ${SL[status]}`);
+    await db.collection('orders').doc(id).update({
+      status,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      [`statusHistory.${status}`]: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    toast(`Estado actualizado: ${SL[status]} ✓`);
     cm('order');
   } catch(e){ toast('Error: '+e.message,'err'); }
 }
@@ -772,6 +904,150 @@ async function saveSettings() {
     });
     toast('Datos bancarios guardados ✓');
   } catch(e){ toast('Error: '+e.message,'err'); }
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GALLERY
+// ═══════════════════════════════════════════════════════════
+let allGalImgs = [], galFilter = '', galNewFiles = [];
+
+const GAL_LABELS = { Producto:'gl-producto', Marketing:'gl-marketing', Instagram:'gl-instagram', Web:'gl-web' };
+
+async function loadGallery() {
+  try {
+    const snap = await db.collection('gallery').orderBy('uploadedAt','desc').get();
+    allGalImgs = snap.docs.map(d => ({id:d.id,...d.data()}));
+  } catch(e) { allGalImgs = []; }
+  renderGallery();
+}
+
+function isUsedInProducts(url) {
+  return allProds.some(p => (p.images||[]).includes(url));
+}
+
+function renderGallery() {
+  const grid = document.getElementById('gal-grid');
+  const filtered = galFilter ? allGalImgs.filter(i => i.label === galFilter) : allGalImgs;
+  if (!filtered.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)"><div style="font-size:2rem;opacity:.3;margin-bottom:.75rem">🖼️</div><p>No hay imágenes${galFilter?' con esta etiqueta':''}.</p></div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(img => {
+    const used = isUsedInProducts(img.url);
+    const labelClass = GAL_LABELS[img.label] || 'gl-web';
+    return `<div class="gal-card">
+      ${used ? `<div class="gal-used">En uso</div>` : ''}
+      <img class="gal-thumb" src="${img.url}" alt="${img.name}" onclick="openImgFull('${img.url}')">
+      <div class="gal-info">
+        <div class="gal-name" title="${img.name}">${img.name}</div>
+        <div class="gal-meta">
+          <span class="gal-label ${labelClass}">${img.label||'—'}</span>
+          <select style="font-size:.6rem;padding:2px 4px;border:1px solid var(--border);background:white;width:auto" onchange="updateGalLabel('${img.id}',this.value)">
+            ${['Producto','Marketing','Instagram','Web'].map(l=>`<option ${l===img.label?'selected':''}>${l}</option>`).join('')}
+          </select>
+        </div>
+        <div class="gal-actions">
+          <button onclick="copyGalURL('${img.url}')">Copiar URL</button>
+          <button class="del" onclick="deleteGalImg('${img.id}','${img.url}')">Borrar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setGalFilter(label, el) {
+  galFilter = label;
+  document.querySelectorAll('.gal-ftag').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  renderGallery();
+}
+
+function openImgFull(url) {
+  document.getElementById('imgfull-src').src = url;
+  om('imgfull');
+}
+
+function copyGalURL(url) {
+  navigator.clipboard.writeText(url).then(() => toast('URL copiada ✓')).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+    toast('URL copiada ✓');
+  });
+}
+
+async function updateGalLabel(id, label) {
+  try {
+    await db.collection('gallery').doc(id).update({ label });
+    const img = allGalImgs.find(i => i.id === id);
+    if (img) img.label = label;
+    renderGallery();
+    toast('Etiqueta actualizada ✓');
+  } catch(e) { toast('Error: '+e.message,'err'); }
+}
+
+async function deleteGalImg(id, url) {
+  if (!confirm('¿Borrar esta imagen? No se puede deshacer.')) return;
+  try {
+    await db.collection('gallery').doc(id).delete();
+    try { await st.refFromURL(url).delete(); } catch(e) {}
+    allGalImgs = allGalImgs.filter(i => i.id !== id);
+    renderGallery();
+    toast('Imagen eliminada');
+  } catch(e) { toast('Error: '+e.message,'err'); }
+}
+
+function onGalFiles(e) {
+  const files = Array.from(e.target.files).filter(f => {
+    if (f.size > 10 * 1024 * 1024) { toast(`${f.name} supera 10MB — omitida`,'err'); return false; }
+    return true;
+  });
+  galNewFiles.push(...files);
+  const prev = document.getElementById('gal-prev');
+  prev.innerHTML = '';
+  galNewFiles.forEach((f,i) => {
+    const r = new FileReader();
+    r.onload = e => {
+      const d = document.createElement('div'); d.className='pitem';
+      d.innerHTML = `<img src="${e.target.result}"><button class="rx" onclick="galNewFiles.splice(${i},1);this.parentElement.remove()">×</button>`;
+      prev.appendChild(d);
+    };
+    r.readAsDataURL(f);
+  });
+  e.target.value = '';
+}
+
+async function uploadGalleryImgs() {
+  if (!galNewFiles.length) { toast('Seleccioná al menos una imagen','err'); return; }
+  const label = document.getElementById('gal-label').value;
+  const btn = document.getElementById('btn-gal-upload');
+  btn.disabled = true; btn.textContent = 'Subiendo...';
+  const prog = document.getElementById('gal-prog');
+  const bar = document.getElementById('gal-bar');
+  const txt = document.getElementById('gal-txt');
+  prog.style.display = 'block';
+  try {
+    for (let i = 0; i < galNewFiles.length; i++) {
+      const f = galNewFiles[i];
+      txt.textContent = `Subiendo ${i+1}/${galNewFiles.length}: ${f.name}`;
+      bar.style.width = Math.round(i/galNewFiles.length*100) + '%';
+      const ref = st.ref(`galeria/${Date.now()}_${f.name}`);
+      await ref.put(f);
+      const url = await ref.getDownloadURL();
+      await db.collection('gallery').add({
+        url, name: f.name, label,
+        uploadedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      bar.style.width = Math.round((i+1)/galNewFiles.length*100) + '%';
+    }
+    toast(`${galNewFiles.length} imagen${galNewFiles.length>1?'es':''} subida${galNewFiles.length>1?'s':''} ✓`);
+    galNewFiles = [];
+    document.getElementById('gal-prev').innerHTML = '';
+    prog.style.display = 'none';
+    cm('gallery');
+    await loadGallery();
+  } catch(e) { toast('Error: '+e.message,'err'); }
+  finally { btn.disabled=false; btn.textContent='Subir imágenes'; }
 }
 
 // ═══════════════════════════════════════════════════════════
