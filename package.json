@@ -1,0 +1,16 @@
+{
+  "name": "riga-ads-sync",
+  "version": "1.0.0",
+  "description": "Sincronizador de métricas de Meta/Google Ads a Firestore para Riga Studio",
+  "main": "sync-ads-metrics.js",
+  "scripts": {
+    "start": "node sync-ads-metrics.js",
+    "sync": "node sync-ads-metrics.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

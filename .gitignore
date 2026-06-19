@@ -1,0 +1,15 @@
+# Credenciales Firebase — NUNCA subir a GitHub
+serviceAccountKey.json
+*.key.json
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Entorno local
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
