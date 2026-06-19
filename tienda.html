@@ -408,6 +408,15 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
+function trackEvent(type, metadata = {}) {
+  db.collection('analytics_events').add({
+    type,
+    page: window.location.pathname,
+    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+    metadata
+  }).catch(() => {});
+}
+
 let allProds = [];
 let cart = JSON.parse(localStorage.getItem('riga_cart')||'[]');
 let currentCat = '';
@@ -754,6 +763,7 @@ async function confirmOrder() {
 }
 
 function sendWspComprobante() {
+  trackEvent('click_social', { network: 'whatsapp', context: 'comprobante' });
   const orderId = lastOrderId ? lastOrderId.slice(-6).toUpperCase() : '——';
   const total = lastOrderTotal ? '$' + lastOrderTotal.toLocaleString('es-UY') : '';
   const msg = encodeURIComponent(`Hola Riga! Hice el pedido #${orderId} por ${total}. Te mando el comprobante ahora.`);
@@ -762,6 +772,13 @@ function sendWspComprobante() {
 
 updateCartUI();
 init();
+
+// ── TRACKING ──────────────────────────────────────────────────
+trackEvent('page_view');
+
+document.querySelectorAll('a[href*="wa.me"]').forEach(el => {
+  el.addEventListener('click', () => trackEvent('click_social', { network: 'whatsapp' }));
+});
 </script>
 
 <!-- WHATSAPP FLOTANTE -->
