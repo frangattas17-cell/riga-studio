@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Riga Studio — Analytics</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230A0A0A'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' font-weight='400' fill='white' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#0A0A0A;--white:#FFFFFF;--off-white:#F8F8F6;--light:#E8E8E6;
+  --mid:#BBBBBB;--dark:#666666;--muted:#666666;--border:#E8E8E6;
+  --danger:#C0392B;--success:#27AE60;--text:#1A1A1A;--bg:#F8F8F6;--sw:220px
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;font-weight:300}
+button{cursor:pointer;font-family:'Inter',sans-serif;border:none;outline:none}
+input{font-family:'Inter',sans-serif;outline:none;border:1px solid var(--border);border-radius:0;padding:9px 12px;width:100%;font-size:13px;color:var(--text);background:white;transition:border-color .2s}
+input:focus{border-color:var(--black)}
+
+/* LOGIN */
+#loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--black)}
+.lcard{background:white;padding:3rem 2.5rem;width:100%;max-width:360px}
+.lbrand{text-align:center;margin-bottom:2.5rem}
+.lbrand .name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:var(--black)}
+.lbrand .sub{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.frow{margin-bottom:1rem}
+label{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px;letter-spacing:.1em;text-transform:uppercase}
+.btn-login{width:100%;padding:12px;background:var(--black);color:white;font-family:'Inter',sans-serif;font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:400;transition:background .2s;margin-top:.5rem;border:none;cursor:pointer}
+.btn-login:hover{background:#333}
+.lerr{color:var(--danger);font-size:.75rem;margin-top:.5rem;display:none}
+
+/* APP */
+#app{display:none;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:var(--sw);background:var(--black);display:flex;flex-direction:column;z-index:100}
+.sbrand{padding:1.75rem 1.5rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.sbrand .name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;letter-spacing:.2em;text-transform:uppercase;color:white}
+.sbrand .sub{font-size:.58rem;letter-spacing:.25em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.3rem}
+.snav{padding:1rem 0;flex:1}
+.nitem{display:flex;align-items:center;gap:12px;padding:.75rem 1.5rem;color:rgba(255,255,255,.45);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;transition:all .2s;border-left:2px solid transparent}
+.nitem:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.04)}
+.nitem.active{color:white;border-left-color:white;background:rgba(255,255,255,.06)}
+.nitem svg{width:16px;height:16px;flex-shrink:0}
+.sfooter{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.08)}
+.btn-out{width:100%;padding:9px;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.5);font-family:'Inter',sans-serif;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;transition:all .2s}
+.btn-out:hover{border-color:rgba(255,255,255,.4);color:rgba(255,255,255,.8)}
+.main{margin-left:var(--sw);min-height:100vh;display:flex;flex-direction:column}
+.topbar{padding:1rem 1.5rem;background:white;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10}
+.topbar h1{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:300;letter-spacing:.05em;color:var(--black)}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+.range-select{font-size:.72rem;letter-spacing:.05em;border:1px solid var(--border);padding:6px 10px;background:white;color:var(--text);cursor:pointer}
+.pcontent{padding:1.5rem;flex:1}
+
+/* STAT CARDS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;margin-bottom:1.5rem;background:var(--border)}
+.scard{background:white;padding:1.5rem}
+.scard .sl{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.scard .sv{font-size:2rem;font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--black);line-height:1}
+.scard .ss{font-size:.7rem;color:var(--mid);margin-top:.4rem}
+.scard .sdelta{font-size:.68rem;margin-top:.3rem;font-weight:500}
+.sdelta.up{color:var(--success)}
+.sdelta.down{color:var(--danger)}
+
+/* CHARTS */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:900px){.charts-grid{grid-template-columns:1fr}}
+.chart-card{background:white;border:1px solid var(--border);padding:1.25rem}
+.chart-card h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);font-weight:500;margin-bottom:1.25rem}
+.chart-wrap{position:relative;height:220px}
+
+/* ADS TABLE */
+.card{background:white;border:1px solid var(--border)}
+.card-hd{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-hd h2{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--black);font-weight:500}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:.65rem 1rem;text-align:left;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);font-weight:500;white-space:nowrap}
+td{padding:.75rem 1rem;border-bottom:1px solid var(--border);font-size:.82rem;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--off-white)}
+.badge{display:inline-block;padding:2px 8px;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.badge-meta{background:#e8f0fe;color:#1a56db}
+.badge-google{background:#fef3c7;color:#92400e}
+
+/* LOADING */
+.loading{text-align:center;padding:3rem;color:var(--muted);font-size:.82rem;letter-spacing:.05em}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="lcard">
+    <div class="lbrand">
+      <div class="name">Riga Studio</div>
+      <div class="sub">Analytics</div>
+    </div>
+    <div class="frow"><label>Email</label><input type="email" id="l-email" placeholder="admin@email.com"></div>
+    <div class="frow"><label>Contraseña</label><input type="password" id="l-pass" placeholder="••••••••"></div>
+    <button class="btn-login" onclick="doLogin()">Ingresar</button>
+    <div class="lerr" id="lerr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="sidebar">
+    <div class="sbrand">
+      <div class="name">Riga Studio</div>
+      <div class="sub">Analytics</div>
+    </div>
+    <div class="snav">
+      <a href="admin.html" class="nitem">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Admin</span>
+      </a>
+      <a href="analytics.html" class="nitem active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Analytics</span>
+      </a>
+    </div>
+    <div class="sfooter">
+      <button class="btn-out" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <div class="main">
+    <div class="topbar">
+      <h1>Analytics</h1>
+      <div class="topbar-right">
+        <select class="range-select" id="rangeSelect" onchange="loadAll()">
+          <option value="7">Últimos 7 días</option>
+          <option value="30" selected>Últimos 30 días</option>
+          <option value="90">Últimos 90 días</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pcontent">
+
+      <!-- STAT CARDS -->
+      <div class="sgrid">
+        <div class="scard">
+          <div class="sl">Total visitas</div>
+          <div class="sv" id="st-views">—</div>
+          <div class="ss" id="st-views-sub">página index + tienda</div>
+        </div>
+        <div class="scard">
+          <div class="sl">Clicks Instagram</div>
+          <div class="sv" id="st-ig">—</div>
+          <div class="ss">desde cualquier página</div>
+        </div>
+        <div class="scard">
+          <div class="sl">Clicks WhatsApp</div>
+          <div class="sv" id="st-wa">—</div>
+          <div class="ss">botones + flotante + checkout</div>
+        </div>
+        <div class="scard">
+          <div class="sl">Inversión total ads</div>
+          <div class="sv" id="st-ads">—</div>
+          <div class="ss" id="st-ads-sub">Meta + Google</div>
+        </div>
+      </div>
+
+      <!-- CHARTS -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h2>Visitas diarias</h2>
+          <div class="chart-wrap"><canvas id="chartViews"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <h2>Gasto vs plataforma</h2>
+          <div class="chart-wrap"><canvas id="chartAds"></canvas></div>
+        </div>
+      </div>
+
+      <!-- ADS TABLE -->
+      <div class="card">
+        <div class="card-hd"><h2>Detalle de campañas</h2></div>
+        <div class="tw">
+          <table>
+            <thead>
+              <tr>
+                <th>Plataforma</th>
+                <th>Campaña</th>
+                <th>Gasto</th>
+                <th>Impresiones</th>
+                <th>Clicks</th>
+                <th>CTR</th>
+                <th>CPC</th>
+              </tr>
+            </thead>
+            <tbody id="ads-tbody">
+              <tr><td colspan="7" class="loading">Cargando campañas...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ADMIN_EMAIL = "frangattas17@gmail.com";
+
+firebase.initializeApp({
+  apiKey: "AIzaSyBHKGHY3vfoWBFoWNtvM-kG3uz5Iz2fWQw",
+  authDomain: "riga-studio.firebaseapp.com",
+  projectId: "riga-studio",
+  storageBucket: "riga-studio.firebasestorage.app",
+  messagingSenderId: "932599103611",
+  appId: "1:932599103611:web:53a1a51e68a77b1a96a2de"
+});
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+let chartViews = null;
+let chartAds   = null;
+
+// ── AUTH ────────────────────────────────────────────────────────
+auth.onAuthStateChanged(user => {
+  if (user && user.email === ADMIN_EMAIL) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadAll();
+  } else if (user) {
+    auth.signOut();
+  }
+});
+
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  const err   = document.getElementById('lerr');
+  err.style.display = 'none';
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch(e) {
+    err.textContent = 'Email o contraseña incorrectos.';
+    err.style.display = 'block';
+  }
+}
+
+document.getElementById('l-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  auth.signOut();
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// ── HELPERS ─────────────────────────────────────────────────────
+function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function fmt(n) {
+  return Number(n).toLocaleString('es-UY');
+}
+
+function last7Labels() {
+  const labels = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    labels.push(d.toLocaleDateString('es-UY', { weekday: 'short', day: 'numeric' }));
+  }
+  return labels;
+}
+
+function dateKey(ts) {
+  const d = ts instanceof Date ? ts : ts.toDate();
+  return d.toISOString().slice(0, 10);
+}
+
+// ── LOAD ALL ─────────────────────────────────────────────────────
+async function loadAll() {
+  const days = parseInt(document.getElementById('rangeSelect').value);
+  const since = daysAgo(days);
+
+  const [eventsSnap, adsSnap] = await Promise.all([
+    db.collection('analytics_events')
+      .where('timestamp', '>=', firebase.firestore.Timestamp.fromDate(since))
+      .get(),
+    db.collection('ads_metrics').get()
+  ]);
+
+  processEvents(eventsSnap.docs);
+  processAds(adsSnap.docs);
+}
+
+// ── EVENTS ───────────────────────────────────────────────────────
+function processEvents(docs) {
+  let views = 0, igClicks = 0, waClicks = 0;
+
+  // daily buckets for last 7 days
+  const buckets = {};
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    buckets[d.toISOString().slice(0, 10)] = 0;
+  }
+
+  docs.forEach(doc => {
+    const data = doc.data();
+    if (data.type === 'page_view') {
+      views++;
+      if (data.timestamp) {
+        const key = dateKey(data.timestamp);
+        if (key in buckets) buckets[key]++;
+      }
+    }
+    if (data.type === 'click_social') {
+      if (data.metadata?.network === 'instagram') igClicks++;
+      if (data.metadata?.network === 'whatsapp') waClicks++;
+    }
+  });
+
+  document.getElementById('st-views').textContent = fmt(views);
+  document.getElementById('st-ig').textContent    = fmt(igClicks);
+  document.getElementById('st-wa').textContent    = fmt(waClicks);
+
+  renderViewsChart(Object.values(buckets));
+}
+
+// ── ADS ──────────────────────────────────────────────────────────
+function processAds(docs) {
+  let totalSpend = 0;
+  const adsPlatforms = { Meta: { spend: 0, impressions: 0, clicks: 0 }, Google: { spend: 0, impressions: 0, clicks: 0 } };
+  const rows = [];
+
+  docs.forEach(doc => {
+    const d = doc.data();
+    const platform = d.platform || 'Otro';
+    totalSpend += d.spend || 0;
+
+    if (adsPlatforms[platform]) {
+      adsPlatforms[platform].spend       += d.spend || 0;
+      adsPlatforms[platform].impressions += d.impressions || 0;
+      adsPlatforms[platform].clicks      += d.clicks || 0;
+    }
+
+    const ctr = d.impressions ? ((d.clicks / d.impressions) * 100).toFixed(2) + '%' : '—';
+    const cpc = d.clicks ? '$' + (d.spend / d.clicks).toFixed(2) : '—';
+
+    rows.push({ platform, campaign: d.campaign || '—', spend: d.spend || 0, impressions: d.impressions || 0, clicks: d.clicks || 0, ctr, cpc });
+  });
+
+  document.getElementById('st-ads').textContent    = '$' + fmt(totalSpend);
+  document.getElementById('st-ads-sub').textContent = `Meta $${fmt(adsPlatforms.Meta.spend)} · Google $${fmt(adsPlatforms.Google.spend)}`;
+
+  renderAdsChart(adsPlatforms);
+  renderAdsTable(rows);
+}
+
+// ── CHARTS ───────────────────────────────────────────────────────
+const chartDefaults = {
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 11 }, color: '#666' } },
+    y: { grid: { color: '#E8E8E6' }, ticks: { font: { family: 'Inter', size: 11 }, color: '#666' }, beginAtZero: true }
+  }
+};
+
+function renderViewsChart(data) {
+  const ctx = document.getElementById('chartViews').getContext('2d');
+  if (chartViews) chartViews.destroy();
+  chartViews = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: last7Labels(),
+      datasets: [{
+        data,
+        borderColor: '#0A0A0A',
+        backgroundColor: 'rgba(10,10,10,0.06)',
+        borderWidth: 1.5,
+        pointRadius: 3,
+        pointBackgroundColor: '#0A0A0A',
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: { ...chartDefaults, responsive: true, maintainAspectRatio: false }
+  });
+}
+
+function renderAdsChart(platforms) {
+  const ctx = document.getElementById('chartAds').getContext('2d');
+  if (chartAds) chartAds.destroy();
+  chartAds = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Meta Ads', 'Google Ads'],
+      datasets: [{
+        label: 'Gasto ($)',
+        data: [platforms.Meta.spend, platforms.Google.spend],
+        backgroundColor: ['rgba(26,86,219,0.15)', 'rgba(146,64,14,0.15)'],
+        borderColor: ['#1a56db', '#92400e'],
+        borderWidth: 1.5
+      }, {
+        label: 'Clicks',
+        data: [platforms.Meta.clicks, platforms.Google.clicks],
+        backgroundColor: ['rgba(26,86,219,0.4)', 'rgba(146,64,14,0.4)'],
+        borderColor: ['#1a56db', '#92400e'],
+        borderWidth: 1.5
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { legend: { display: true, labels: { font: { family: 'Inter', size: 11 }, color: '#666', boxWidth: 12 } } },
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+}
+
+// ── TABLE ─────────────────────────────────────────────────────────
+function renderAdsTable(rows) {
+  const tbody = document.getElementById('ads-tbody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="loading">Sin datos de campañas. Cargá métricas en la colección <code>ads_metrics</code>.</td></tr>`;
+    return;
+  }
+  rows.sort((a, b) => b.spend - a.spend);
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td><span class="badge ${r.platform === 'Meta' ? 'badge-meta' : 'badge-google'}">${r.platform}</span></td>
+      <td>${r.campaign}</td>
+      <td>$${fmt(r.spend)}</td>
+      <td>${fmt(r.impressions)}</td>
+      <td>${fmt(r.clicks)}</td>
+      <td>${r.ctr}</td>
+      <td>${r.cpc}</td>
+    </tr>`).join('');
+}
+</script>
+</body>
+</html>
